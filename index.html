@@ -254,6 +254,8 @@
     font-size:clamp(15px,2.4vw,22px);padding:8px 22px;cursor:pointer;box-shadow:0 4px 0 #a02020;
   }
 
+  .voiceChip{background:#e8f7ee;border:2px solid #2e9e5b;color:#1d6e3c;border-radius:999px;padding:4px 14px;font-weight:800;font-size:clamp(11px,1.7vw,15px);}
+
   /* ===== نافذة الأناشيد ===== */
   #songs{position:fixed;inset:0;background:#fffcf4f5;backdrop-filter:blur(8px);z-index:50;display:none;flex-direction:column;padding:14px clamp(10px,3vw,40px) 10px;overflow:hidden;}
   #songs.open{display:flex;animation:rise .35s ease both;}
@@ -306,6 +308,7 @@
     <div class="chip" id="secChip">رِحْلَةُ الحُرُوفِ</div>
     <div class="progWrap"><div id="progBar"></div></div>
     <div id="counter">١ / ١</div>
+    <button class="iconBtn" id="btnSound" title="تشغيل/إيقاف الصوت">🔊</button>
     <button class="iconBtn" id="btnSongs" title="نافذة الأناشيد">🎵 الأَنَاشِيد</button>
     <button class="iconBtn" id="btnMenu" title="فهرس الحروف">☰</button>
     <button class="iconBtn" id="btnFs" title="ملء الشاشة">⛶</button>
@@ -331,14 +334,17 @@
 <div id="songs">
   <div class="head">
     <h2>🎵 دَفْتَرُ الأَنَاشِيدِ</h2>
-    <button class="closeBtn" id="btnCloseSongs">إِغْلَاق ✕</button>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <div id="voiceNote" class="voiceChip"></div>
+      <button class="closeBtn" id="btnCloseSongs">إِغْلَاق ✕</button>
+    </div>
   </div>
   <div class="songLayout">
     <div class="songList" id="songList"></div>
     <div class="songStageBox">
       <div class="songCard" id="songCard"></div>
       <div class="songTools">
-        <button class="iconBtn" id="btnKaroake" style="background:#2e9e5b">▶️ تَرْدِيدٌ جَمَاعِيٌّ</button>
+        <button class="iconBtn" id="btnKaroake" style="background:#2e9e5b">🔊 تَرْدِيدٌ جَمَاعِيٌّ</button>
         <button class="iconBtn" id="btnEditSong" style="background:#b8860b">✏️ تَعْدِيلُ النَّصِّ</button>
         <button class="iconBtn" id="btnResetSong" style="background:#8d7460">↺ اسْتِرْجَاعُ الأَصْلِ</button>
       </div>
@@ -597,6 +603,42 @@ let cur = 0;
   bg.innerHTML=html;
 })();
 
+/* ---------- الصَّوْتُ (النُّطْقُ) ---------- */
+const SOUND = { on:true, voice:null };
+function pickVoice(){
+  if(!('speechSynthesis' in window)) return;
+  const vs = speechSynthesis.getVoices();
+  SOUND.voice =
+    vs.find(v=>/ar[-_]SA/i.test(v.lang) && /hamed|naayf|saudi/i.test(v.name)) || /* صوت سعودي */
+    vs.find(v=>/ar[-_]SA/i.test(v.lang)) ||
+    vs.find(v=>/^ar/i.test(v.lang)) || null;
+}
+if('speechSynthesis' in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function cleanForSpeech(t){
+  return t.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}\u{20E3}\u{200D}\u{2726}-\u{2727}]/gu,'').replace(/\*/g,'').replace(/\s+/g,' ').trim();
+}
+function speak(text, opts={}){
+  if(!SOUND.on || !('speechSynthesis' in window)) return;
+  const t = cleanForSpeech(text); if(!t) return;
+  try{
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = SOUND.voice ? SOUND.voice.lang : 'ar-SA';
+    if(SOUND.voice) u.voice = SOUND.voice;
+    u.rate = opts.rate ?? 0.85; u.pitch = opts.pitch ?? 1;
+    speechSynthesis.speak(u);
+    return u;
+  }catch(e){}
+}
+function harClick(el,s,w){
+  el.querySelector('.sym').animate([{transform:'scale(1)'},{transform:'scale(1.25)'},{transform:'scale(1)'}],{duration:450});
+  speak(s+'، '+w);
+}
+function wcardClick(el,word){
+  el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+  speak(word);
+}
+
 /* ---------- قوالب الشرائح ---------- */
 function themeOf(sl){
   if(sl.L) return sl.L;
@@ -654,7 +696,7 @@ function tplCard(L){
   return `<section class="slide">
     <h2>أَهْلًا بِكُمْ فِي حَرْفٍ جَدِيدٍ!</h2>
     <div class="cardGrid">
-      <div class="letterCircle">
+      <div class="letterCircle" style="cursor:pointer" title="اِنْقُرْ لِلسَّمَاعِ" onclick="speak('حَرْفُ ${L.name}ِ')">
         <div class="glyph">${glyph}</div>
         <div class="nm">حَرْفُ ${L.name}</div>
       </div>
@@ -663,7 +705,10 @@ function tplCard(L){
         <div class="infoCard"><span class="ic">🔤</span><span>شَكْلُهُ مُنْفَرِدًا: <b style="color:var(--c)">${glyph}</b></span></div>
         ${L.similar?`<div class="infoCard"><span class="ic">👀</span><span>${L.similar}</span></div>`:''}
         <div class="sentenceCard">${L.senIc} ${hl(L.words[0].w)} — ${L.sentence}</div>
-        <button class="iconBtn" style="align-self:center;font-size:clamp(12px,1.9vw,18px)" onclick="openSongById('L_${L.id}')">🎵 نَشِيدُ حَرْفِ ${L.name}</button>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+          <button class="iconBtn" style="font-size:clamp(12px,1.9vw,18px);background:#2e9e5b" onclick="speak('حَرْفُ ${L.name}ِ. ${L.sentence}')">🔊 اِسْتَمِعْ</button>
+          <button class="iconBtn" style="font-size:clamp(12px,1.9vw,18px)" onclick="openSongById('L_${L.id}')">🎵 نَشِيدُ حَرْفِ ${L.name}</button>
+        </div>
       </div>
     </div>
   </section>`;
@@ -677,7 +722,7 @@ function tplPositions(L){
     'ـ'+L.letter
   ];
   const cards = L.positions.map((p,i)=>`
-    <div class="posCard">
+    <div class="posCard" style="cursor:pointer" onclick="speak('${plain(p.w)}')">
       <div class="tag">${tags[i]}</div>
       <div class="form">${forms[i]}</div>
       <div class="word">${hl(p.w)}</div>
@@ -687,7 +732,7 @@ function tplPositions(L){
     ? `<div class="noteChip">ℹ️ حَرْفُ ${L.name} لَا يَتَّصِلُ بِالحَرْفِ الَّذِي بَعْدَهُ</div>` : '';
   return `<section class="slide">
     <h2>مَوَاضِعُ حَرْفِ ${L.name} فِي الكَلِمَةِ</h2>
-    <p class="sub">لاحِظُوا الحَرْفَ المُلَوَّنَ فِي كُلِّ كَلِمَةٍ</p>
+    <p class="sub">لَاحِظُوا الحَرْفَ المُلَوَّنَ… وَانْقُرُوا عَلَى البِطَاقَةِ لِسَمَاعِ الكَلِمَةِ 🔊</p>
     <div class="posGrid">${cards}</div>
     ${note}
   </section>`;
@@ -695,27 +740,27 @@ function tplPositions(L){
 
 function tplHarakat(L){
   const cards = L.harakat.map(h=>`
-    <div class="harCard" onclick="this.querySelector('.sym').animate([{transform:'scale(1)'},{transform:'scale(1.25)'},{transform:'scale(1)'}],{duration:450})">
+    <div class="harCard" style="cursor:pointer" onclick="harClick(this,'${h.s}','${h.w?plain(h.w):''}')">
       <div class="nm">حَرْفُ ${L.name} مَعَ ${h.n}</div>
       <div class="sym">${h.s}</div>
       ${h.w?`<div class="word">${hl(h.w)}</div><div class="pic emoji">${h.e}</div>`:`<div class="word">اِقْرَؤُوا مَعِي</div><div class="pic emoji">${h.e}</div>`}
     </div>`).join('');
   return `<section class="slide">
     <h2>حَرْفُ ${L.name} مَعَ الحَرَكَاتِ الثَّلَاثِ</h2>
-    <p class="sub">اِنْقُرُوا عَلَى البِطَاقَاتِ! الفَتْحَةُ (ـَ) • الضَّمَّةُ (ـُ) • الكَسْرَةُ (ـِ)</p>
+    <p class="sub">اِنْقُرُوا عَلَى البِطَاقَةِ لِسَمَاعِ الحَرْفِ بِالحَرَكَةِ 🔊 — الفَتْحَةُ (ـَ) • الضَّمَّةُ (ـُ) • الكَسْرَةُ (ـِ)</p>
     <div class="harGrid">${cards}</div>
   </section>`;
 }
 
 function tplWords(L){
   const cards = L.words.map(w=>`
-    <div class="wcard" onclick="this.classList.remove('pop');void this.offsetWidth;this.classList.add('pop')">
+    <div class="wcard" onclick="wcardClick(this,'${plain(w.w)}')">
       <div class="pic emoji">${w.e}</div>
       <div class="word">${hl(w.w)}</div>
     </div>`).join('');
   return `<section class="slide">
     <h2>كَلِمَاتٌ تَبْدَأُ بِحَرْفِ ${L.name}</h2>
-    <p class="sub">اِنْقُرُوا عَلَى البِطَاقَاتِ وَاقْرَؤُوا بِصَوْتٍ عَالٍ 📣</p>
+    <p class="sub">اِنْقُرُوا عَلَى البِطَاقَةِ لِتَسْمَعُوا الكَلِمَةَ وَتَقْرَؤُوهَا بِصَوْتٍ عَالٍ 🔊</p>
     <div class="wordGrid">${cards}</div>
   </section>`;
 }
@@ -817,7 +862,9 @@ function pickOpt(btn,ok){
     btn.classList.add('right');
     document.querySelectorAll('#qBox .opt').forEach(b=>b.classList.add('locked'));
     ACT.stars++; ACT.i++;
-    fb.className='feedback ok'; fb.textContent=rnd(PRAISE);
+    const praise = rnd(PRAISE);
+    fb.className='feedback ok'; fb.textContent=praise;
+    speak(praise);
     starBurst(btn); renderQSoon();
   }else{
     btn.classList.add('wrong');
@@ -832,7 +879,9 @@ function pickFind(btn,ok,ci){
     ACT.found.add(ci); btn.classList.add('right'); starBurst(btn);
     if(ACT.found.size===ACT.need){
       ACT.stars++; ACT.i++;
-      fb.className='feedback ok'; fb.textContent=rnd(PRAISE);
+      const praise = rnd(PRAISE);
+      fb.className='feedback ok'; fb.textContent=praise;
+      speak(praise);
       renderQSoon();
     }else{ fb.className='feedback ok'; fb.textContent='عَمَلٌ رَائِعٌ… أَيْنَ الثَّانِيَةُ؟ 🔍'; }
   }else{
@@ -891,7 +940,9 @@ function pickRev(btn,ok){
     document.querySelectorAll('#qBox .opt').forEach(b=>b.classList.add('locked'));
     REV.stars++; REV.i++;
     reviewStars=Math.max(reviewStars,REV.stars);
-    fb.className='feedback ok'; fb.textContent=rnd(PRAISE);
+    const praise = rnd(PRAISE);
+    fb.className='feedback ok'; fb.textContent=praise;
+    speak(praise);
     starBurst(btn);
     setTimeout(renderRev,1100);
   }else{
@@ -1055,7 +1106,7 @@ const SONGS=[
   ...LETTERS.map(L=>({id:'L_'+L.id, ic:L.letter==='ه'?'هـ':L.letter, hue:L.hue, title:'نَشِيدُ حَرْفِ '+L.name, lines:LETTER_CHANTS[L.id]})),
 ];
 
-let curSong=0, songTimer=null, editing=false;
+let curSong=0, songTimer=null, editing=false, singing=false, karoIdx=0, karoLines=[];
 let SONG_OVR={};
 try{ SONG_OVR=JSON.parse(localStorage.getItem('hurufSongs')||'{}')||{}; }catch(e){}
 function songLines(s){ return (SONG_OVR[s.id]&&SONG_OVR[s.id].length)?SONG_OVR[s.id]:s.lines; }
@@ -1068,7 +1119,24 @@ function buildSongList(){
       <span>${s.title}</span>
     </button>`).join('');
 }
-function openSongs(){ buildSongList(); $('#menu').classList.remove('open'); $('#songs').classList.add('open'); showSong(curSong); }
+function openSongs(){ buildSongList(); $('#menu').classList.remove('open'); $('#songs').classList.add('open'); updateVoiceNote(); showSong(curSong); }
+function updateVoiceNote(){
+  const el=$('#voiceNote'); if(!el) return;
+  if(!('speechSynthesis' in window)){
+    el.style.background='#fdecea'; el.style.borderColor='#e53935'; el.style.color='#a02020';
+    el.textContent='⚠️ المُتَصَفِّحُ لَا يَدْعَمُ النُّطْقَ';
+    return;
+  }
+  const vs = speechSynthesis.getVoices();
+  const sa = vs.find(v=>/ar[-_]SA/i.test(v.lang));
+  const ar = vs.find(v=>/^ar/i.test(v.lang));
+  if(sa){ el.textContent='🔊 الصَّوْتُ العَرَبِيُّ السُّعُودِيُّ جَاهِزٌ: '+sa.name.replace(/^Microsoft |^Google /,''); }
+  else if(ar){ el.textContent='🔊 صَوْتٌ عَرَبِيٌّ جَاهِزٌ: '+ar.name.replace(/^Microsoft |^Google /,'')+' — (يُفَضَّلُ تَثْبِيتُ صَوْتٍ سُعُودِيٍّ)'; }
+  else {
+    el.style.background='#fff3d6'; el.style.borderColor='#e8b94a'; el.style.color='#8a6100';
+    el.textContent='⚠️ لَا يُوجَدُ صَوْتٌ عَرَبِيٌّ فِي الجِهَازِ — أَضِيفُوهُ مِنْ: الإِعْدَادَاتِ ← الوَقْتُ وَاللُّغَةُ ← الكَلَامُ ← إِضَافَةُ أَصْوَاتٍ ← العَرَبِيَّة';
+  }
+}
 function openSongById(id){ const i=SONGS.findIndex(s=>s.id===id); if(i>=0){ curSong=i; openSongs(); } }
 function closeSongs(){ stopKaroake(); $('#songs').classList.remove('open'); editing=false; }
 function showSong(i){
@@ -1086,22 +1154,37 @@ function renderSongCard(){
     ${songLines(s).map((l,k)=>`<div class="songLine" data-k="${k}">${l}</div>`).join('')}
     <div class="songNotes">🎶 🎵 🎶</div>`;
 }
-function toggleKaroake(){
-  if(songTimer){ stopKaroake(); return; }
-  const lines=[...document.querySelectorAll('.songLine')];
-  if(!lines.length) return;
+function toggleKaroake(){ if(songTimer || singing){ stopKaroake(); } else { startKaroake(); } }
+function startKaroake(){
+  karoLines = [...document.querySelectorAll('.songLine')];
+  if(!karoLines.length) return;
   $('#btnKaroake').textContent='⏸ إِيقَافُ التَّرْدِيدِ';
-  let k=0; lines[0].classList.add('active');
-  songTimer=setInterval(()=>{
-    lines[k].classList.remove('active');
-    k=(k+1)%lines.length;
-    lines[k].classList.add('active');
-  },2600);
+  karoIdx = 0;
+  playLine();
+}
+function playLine(){
+  if(!$('#songs').classList.contains('open')) return stopKaroake();
+  karoLines.forEach((l,i)=>l.classList.toggle('active', i===karoIdx));
+  const txt = cleanForSpeech(karoLines[karoIdx].textContent);
+  if(SOUND.on && 'speechSynthesis' in window && txt){
+    const u = new SpeechSynthesisUtterance(txt);
+    u.lang = SOUND.voice ? SOUND.voice.lang : 'ar-SA';
+    if(SOUND.voice) u.voice = SOUND.voice;
+    u.rate = 0.8; u.pitch = 1.05;
+    singing = true;
+    u.onend = ()=>{ singing=false; karoIdx=(karoIdx+1)%karoLines.length; songTimer=setTimeout(playLine, 500); };
+    u.onerror = u.onend;
+    try{ speechSynthesis.speak(u); }catch(e){ u.onend(); }
+  } else {
+    songTimer = setTimeout(()=>{ karoIdx=(karoIdx+1)%karoLines.length; playLine(); }, 2600);
+  }
 }
 function stopKaroake(){
-  if(songTimer){ clearInterval(songTimer); songTimer=null; }
+  if(songTimer){ clearTimeout(songTimer); songTimer=null; }
+  try{ speechSynthesis.cancel(); }catch(e){}
+  singing=false;
   document.querySelectorAll('.songLine').forEach(l=>l.classList.remove('active'));
-  $('#btnKaroake').textContent='▶️ تَرْدِيدٌ جَمَاعِيٌّ';
+  $('#btnKaroake').textContent='🔊 تَرْدِيدٌ جَمَاعِيٌّ';
 }
 function toggleEditSong(){
   if(!editing){
@@ -1126,6 +1209,12 @@ $('#btnCloseSongs').onclick=closeSongs;
 $('#btnKaroake').onclick=toggleKaroake;
 $('#btnEditSong').onclick=toggleEditSong;
 $('#btnResetSong').onclick=resetSong;
+$('#btnSound').onclick=()=>{
+  SOUND.on=!SOUND.on;
+  $('#btnSound').textContent = SOUND.on ? '🔊' : '🔇';
+  $('#btnSound').style.background = SOUND.on ? '' : '#8d7460';
+  if(!SOUND.on){ try{ speechSynthesis.cancel(); }catch(e){} stopKaroake(); }
+};
 
 /* ---------- البدء ---------- */
 const start=parseInt(location.hash.slice(1));
