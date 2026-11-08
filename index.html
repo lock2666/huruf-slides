@@ -238,6 +238,18 @@
   .signLine{border-bottom:3px dotted #c9a227;height:26px;margin-bottom:6px;}
   .certTools{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px;}
 
+  /* ===== تمرين الكتابة ===== */
+  #wcv{width:100%;height:clamp(200px,40vh,340px);background:#fff;border:4px solid var(--c2);border-radius:22px;touch-action:none;display:block;box-shadow:0 6px 0 var(--c2);}
+  .wTools{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:4px 0 10px;}
+  .wtLbl{font-weight:800;font-size:clamp(12px,1.8vw,16px);color:#8a7561;}
+  .penDot{width:30px;height:30px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #d9c8b0;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;}
+  .penDot.sel{box-shadow:0 0 0 3px var(--c);transform:scale(1.1);}
+  .penDot.thick{background:#8a7561;border-radius:10px;}
+  .wSent{background:#fff;border:3px dashed var(--c2);border-radius:20px;padding:10px 14px;margin-top:12px;}
+  .wsTitle{font-weight:800;color:var(--c);font-size:clamp(14px,2.2vw,19px);margin-bottom:4px;}
+  .wsLine{font-size:clamp(16px,2.8vw,26px);font-weight:800;padding:4px 10px;border-radius:12px;cursor:pointer;line-height:1.9;}
+  .wsLine:hover{background:#fff7ec;}
+
   /* ===== رقعة التهجئة ===== */
   #spellBox{position:fixed;inset:auto 0 0 0;z-index:65;display:none;justify-content:center;padding:0 10px 12px;}
   #spellBox.open{display:flex;animation:rise .3s ease both;}
@@ -368,9 +380,9 @@
     <div class="chip" id="secChip">رِحْلَةُ الحُرُوفِ</div>
     <div class="progWrap"><div id="progBar"></div></div>
     <div id="counter">١ / ١</div>
-    <button class="iconBtn" id="btnSpeed" title="سرعة النطق والتهجئة">🐢</button>
+    <button class="iconBtn" id="btnSpeed" title="سرعة النطق والتهجئة">⏱️</button>
     <button class="iconBtn" id="btnSound" title="تشغيل/إيقاف الصوت">🔊</button>
-    <button class="iconBtn" id="btnSongs" title="نافذة الأناشيد">🎵 <span class="btxt">الأَنَاشِيد</span></button>
+    <button class="iconBtn" id="btnSongs" title="نافذة الأناشيد">✨ <span class="btxt">الأَنَاشِيد</span></button>
     <button class="iconBtn" id="btnMenu" title="فهرس الحروف">☰</button>
     <button class="iconBtn" id="btnFs" title="ملء الشاشة">⛶</button>
   </header>
@@ -397,15 +409,15 @@
 <div id="speedPop">
   <div class="vsCard" style="border-color:#2e9e5b;max-width:480px">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
-      <h2 style="margin:0;font-size:clamp(17px,3vw,26px)">🐢 سُرْعَةُ النُّطْقِ وَالتَّهْجِئَةِ</h2>
+      <h2 style="margin:0;font-size:clamp(17px,3vw,26px)">⏱️ سُرْعَةُ النُّطْقِ وَالتَّهْجِئَةِ</h2>
       <button class="closeBtn" id="btnCloseSpeed">إِغْلَاق ✕</button>
     </div>
     <div id="spdVal" class="spdVal">٠٫٩×</div>
-    <div class="spRange"><span class="emoji" style="font-size:26px">🐢</span><input type="range" id="spdRange" min="0.6" max="1.4" step="0.05"><span class="emoji" style="font-size:26px">🐇</span></div>
+    <div class="spRange"><span class="emoji" style="font-size:26px">⏪</span><input type="range" id="spdRange" min="0.6" max="1.4" step="0.05"><span class="emoji" style="font-size:26px">⏩</span></div>
     <div class="spPresets">
-      <button class="spBtn" data-r="0.7">بَطِيءٌ 🐢</button>
+      <button class="spBtn" data-r="0.7">بَطِيءٌ ⏪</button>
       <button class="spBtn" data-r="0.9">مُعْتَدِلٌ ✓</button>
-      <button class="spBtn" data-r="1.15">سَرِيعٌ 🐇</button>
+      <button class="spBtn" data-r="1.15">سَرِيعٌ ⏩</button>
     </div>
     <label class="spSpell"><input type="checkbox" id="spdSpell"> 🔤 وَضْعُ التَّهْجِئَةِ: عِنْدَ النَّقْرِ عَلَى بِطَاقَةِ كَلِمَةٍ تَظْهَرُ مَقَاطِعُهَا وَيُنْطَقُ كُلُّ مَقْطَعٍ (أَرْ … نَبْ) ثُمَّ الكَلِمَةُ كَامِلَةً</label>
     <div class="spHint">✨ يُطَبَّقُ فَوْرِيًّا عَلَى كُلِّ الأَصْوَاتِ — وَالتَّرْدِيدُ الجَمَاعِيُّ لِلْأَنَاشِيدِ أَبْطَأُ بِأَصْلِهِ لِيُتِيحَ لِلْأَطْفَالِ التِّكْرَارَ خَلْفَهُ</div>
@@ -414,7 +426,7 @@
 
 <div id="songs">
   <div class="head">
-    <h2>🎵 دَفْتَرُ الأَنَاشِيدِ</h2>
+    <h2>✨ دَفْتَرُ الأَنَاشِيدِ</h2>
     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
       <div id="voiceNote" class="voiceChip"></div>
       <button class="closeBtn" id="btnCloseSongs">إِغْلَاق ✕</button>
@@ -426,7 +438,7 @@
       <div class="songCard" id="songCard"></div>
       <div class="songTools">
         <button class="iconBtn" id="btnKaroake" style="background:#2e9e5b">🔊 تَرْدِيدٌ جَمَاعِيٌّ</button>
-        <button class="iconBtn" style="background:#1e88e5" onclick="toggleSpeedPop(true)">🐢 السُّرْعَةُ</button>
+        <button class="iconBtn" style="background:#1e88e5" onclick="toggleSpeedPop(true)">⏱️ السُّرْعَةُ</button>
         <button class="iconBtn" id="btnEditSong" style="background:#b8860b">✏️ تَعْدِيلُ النَّصِّ</button>
         <button class="iconBtn" id="btnResetSong" style="background:#8d7460">↺ اسْتِرْجَاعُ الأَصْلِ</button>
       </div>
@@ -663,6 +675,7 @@ LETTERS.forEach(L=>{
   slides.push({kind:'positions', L});
   slides.push({kind:'harakat',   L});
   slides.push({kind:'words',     L});
+  slides.push({kind:'write',     L});
   slides.push({kind:'activity',  L});
 });
 slides.push({kind:'review'});
@@ -749,13 +762,9 @@ function deviceSpeak(t, opts={}, cb){
 
 /* الدالة الموحدة: الصوت المسجّل محليًا أولًا ثم صوت الجهاز — دون أي API */
 function vKey(t){ let h=5381; for(let i=0;i<t.length;i++){ h=((h<<5)+h+t.charCodeAt(i))|0; } return (h>>>0).toString(36); }
-const LOCAL_AUDIO = { ready:false, keys:new Set() };
-(async()=>{ /* تحميل بيان الأصوات المسجلة */
-  try{
-    const r=await fetch('audio/manifest.json');
-    if(r.ok){ const j=await r.json(); LOCAL_AUDIO.keys=new Set(j.keys||[]); LOCAL_AUDIO.ready=true; }
-  }catch(e){}
-})();
+/* بيان المفاتيح مضمّن داخل الملف — يعمل حتى دون إنترنت ومن الملف المحلي مباشرة */
+const AUDIO_KEYS = ["10blr3b","10szd5x","10wbu76","10ymce1","110g35y","1115p22","111vh9g","112654","11isdlv","11jblsp","11r1jw4","11sgzxp","11sjg9a","11zr8xi","121mq6s","128wne5","12ibo6m","12jfjmb","12kuvw","12p8u6z","12vmqmc","12zfbev","1386g0z","13agwb9","13xbpg5","143b0ej","147mw02","1499icq","14e9g9h","14j5l4s","14m0uzo","14r3s7e","14wqqh5","14yc6di","15k7gf2","15kk4g5","15pnxva","15x1tz9","15xm8pg","15zpoby","1617jrv","16qvwgv","171nhi0","175ah","176p0hf","17snjas","17tbr0j","17tydmt","18gly9r","18m2n2j","18rj3b0","191tyop","19n2mfc","1a36r72","1a6rv3c","1a7h0sj","1avkyj9","1azvpuu","1b2zgp3","1b5zizz","1bjunl8","1blrtg5","1bmqpmh","1bndqwh","1bo35yq","1bqxemr","1brjnrd","1buy8m1","1c1i45h","1c27k12","1c2wz3b","1c4e66q","1c5qmiz","1c6g2kz","1c70dz0","1c7uvpq","1c9kqrc","1cb260o","1cc3142","1cdh6dj","1cpv4bc","1cum9pg","1ddbjij","1dekh55","1dfsv54","1dg4wcc","1dh5i2e","1dicyac","1dq7o9m","1drgj1l","1dtj0bw","1e5ed1u","1el7j9m","1evw2pk","1f2h6nw","1f5mhhm","1faj18z","1fon63y","1fq9ioz","1g7e8uh","1gclt1g","1giukit","1gqty13","1h0lp9","1h277cq","1h5a8ut","1h9fom5","1hjpi8b","1hl43zs","1ho70t2","1hwtq2q","1i1qo86","1i5t223","1ien9ax","1ir8gnh","1iwab3p","1iy3cr9","1j9spez","1jnrfr8","1jo2fe8","1jtk3eh","1k5ptf1","1k7u9ee","1kduc91","1kn1vo1","1l34gm7","1l5qscp","1l68zpd","1la6f7z","1lc5opo","1lfzybx","1lngynh","1lnrzlf","1lpshgy","1lrpk1m","1n46knk","1n5dn20","1n8w7th","1nejw08","1nwimmj","1o8ogqi","1oevkoq","1ofa9xv","1ozp80e","1p36o0f","1pa1kvk","1pe8ntv","1phtcw6","1pq1yfg","1pqeb5x","1pvdmv3","1q90og7","1qd20cs","1qelfs7","1qjkz0q","1qjuj8h","1qzy6k8","1r0dkug","1r0fyxp","1r1622q","1rnnnza","1rnyfbe","1ron0y0","1roqvma","1rtjjta","1s3o3sa","1s5xw3z","1s9q98p","1sab939","1sajtbe","1schuzd","1suc7ch","1sv9p0x","1swygw1","1sy9brm","1sycag0","1szsp3q","1t0xff6","1t6wqo6","1tdwwqy","1tgxogw","1tljbgx","1tmk7vo","1tsrs4m","1u420oh","1u7igez","1u89btr","1u8n6yh","1ueterz","1ui5uv","1uxlb62","1v43ayi","1vitmzh","1vk546y","1w0ur1r","1w2pm10","1w64eez","1w6s49v","1w7m209","1w9hcn4","1wutwih","1ww00tf","1x04mvo","1x1mdd0","1x54v5g","1ximkf6","1xkh4b6","1xo7f4h","1xp7el3","1xqf1jp","1xugq74","1xxgou5","1y3w1f4","1ydwn3t","1yey9se","1yj4grl","1yl9epc","21uo18","2ajx26","2fgj4w","2nb8an","31dwyd","3207f7","32blq0","386nmt","386p8i","386p8k","386p9b","386p9d","386qx1","386qxa","386qxu","386qyu","386qzk","386ru2","386sli","386slk","386sn8","386sob","386tfr","386tft","386tgh","386tgp","386thl","386tik","386ua0","386uct","386v49","386v4b","386v4r","386v72","386vyi","386w0c","386w1b","386wsr","386wst","386wt3","386wtx","386wvk","386xn0","386xna","386xpn","386xpt","386yh9","386yhb","386yhh","386yiw","386zbi","386zbk","386zeb","38705r","38707l","38708k","387102","38711u","3871u9","3871ub","3871uj","3871v4","3871vf","3871w2","3871wx","3873ir","3873it","3873lk","3874d0","3874ft","387a8r","387a8t","387a9l","387a9x","387abk","387b30","387b32","387b5t","387bx9","387bxa","387bxb","387byf","387bz3","387c02","387cri","387crj","387crk","387crq","387csc","387cso","387cub","387cui","387dlr","387dlt","387dm1","387dmk","387dnl","387dny","387eg0","387eg1","387eg2","387eit","387fa9","387faa","387fab","387fbe","387fd2","387g4i","387g6c","387g7b","387ht0","387ht8","387hu3","387hu6","387huu","3aru6s","3cebnh","3d6dqb","3iqs6","3iqs7","3iqsa","3iqu2","3iquz","3iqv1","3iqwr","3iqws","3iqwt","3iqwu","3iqwv","3iqyl","3iqym","3iqyn","3iqyp","3iqzi","3iqzj","3iqzk","3iqzm","3ir0f","3ir0g","3ir0h","3ir0j","3ir1c","3ir1d","3ir1e","3ir1g","3ir29","3ir2a","3ir2b","3ir2d","3ir36","3ir37","3ir38","3ir3a","3ir43","3ir44","3ir45","3ir47","3ir50","3ir51","3ir52","3ir54","3ir5x","3ir5y","3ir5z","3ir61","3ir6u","3ir6v","3ir6w","3ir6y","3ir7r","3ir7s","3ir7t","3ir7v","3ir8o","3ir8p","3ir8q","3ir8s","3ir9l","3ir9m","3ir9n","3ir9p","3irai","3iraj","3irak","3iral","3iram","3irbf","3irbg","3irbh","3irbj","3ircc","3ircd","3irce","3ircg","3ird9","3irda","3irdb","3irdd","3irjo","3irjp","3irjq","3irjs","3irkl","3irkm","3irkn","3irkp","3irli","3irlj","3irlk","3irlm","3irmf","3irmg","3irmh","3irmi","3irmj","3irnc","3irnd","3irne","3irng","3iro9","3iroa","3irob","3iroc","3irod","3irp6","3irp7","3irp8","3irpa","3irq3","3irq4","3irq5","3irq7","3irrx","3irry","3irs0","3irs1","3twmm1","3tyiz5","3u86","3u87","3u8b","3u8c","3u8d","3u8e","3u8f","3u8g","3u8h","3u8i","3u8k","3u8l","3u8m","3u8n","3u8o","3u8p","3u8s","3u8u","3u92","3u93","3u94","3u95","3u96","3u97","3u99","3u9a","3u9b","401ap7","4djaap","4dv9td","4ga1er","4pyuci","4xsnwt","4zjcb7","53d7ec","5dlica","5kvr8m","5majom","61zsz7","62p81g","65qk2y","68usqo","68zbec","6cz0wx","6fesml","6w03z3","6y7oq9","78ebmn","7iktqo","7jhumf","7u4iu7","85qzcx","8hfbwg","8sg86k","8tgoem","8u834d","8vecet","8x5l0u","9485a7","971row","98pb6c","9fpdq4","9hrd7d","9ovec2","9pejni","9wjlfi","9ydgi4","a105ou","a34ytu","a39jko","a420ne","aezep0","af324z","afp2qn","ajjhby","aku0va","b0n5yh","b0sbg6","b2ml1j","b42mpi","b4znu6","bf0ukp","bif3b1","blezqj","boejyf","bpxe3s","c0496p","c05ryu","c49mw7","cbcek","cd869y","cf17ry","cf890z","cpllck","d0j0ds","d1gpge","d2c0u7","d5hk9i","daduhf","db7cq8","dgaikd","djg7m1","dkv0zt","dnro0k","dp2u71","dp9gvm","dqf7a2","dsdc8a","dtqto","e58z9","e5aye","eck9xv","ev5j10","eyfevs","f7v87j","f9ww3v","fb4ccx","fc5ans","flq7y1","fnzzvf","focyxb","fukha1","g4oo7t","g6la0a","g7w4rv","g910ng","ggmh4l","glujpw","glypk6","gm93yd","gwbtpp","gzbh7u","gzrq64","h01tp2","hipvc2","hji9qv","hyi8sf","i6t2t4","i6xjmj","ifeg7l","iva0s0","j5lpv1","jdek3y","joky30","jxzf0a","k8nq4f","kb9eh4","kcgeci","klxlaw","kuxw0d","kzpp1w","l15rqz","l2pzkl","l5rblg","l9dkiy","lamgky","llyir","m1z443","m2cusm","m4ko9l","m8te1","ma8163","mdsugm","me47ei","mo9fvo","ms9rs9","mxgq4v","nqctaj","nuomjt","o6mgl6","o97fri","onxjdp","ox2776","pz9cbm","q0fc6y","q5a0ir","qa7vp3","qae14n","qbwm34","qfc6f6","qgk2nz","qk1rvg","qmo4kx","qnthhw","qrvq41","qwawdv","r33gfb","rbd10f","rdeky2","rk7tn0","rnumzv","roxxwi","rr8h9f","rrqpyp","rx5jwg","s3m5s1","sgg22w","sk4l1e","skfna9","sqy0zh","t709wm","td9c8h","tjxrnq","tnl7vn","tnwtcn","tuseda","u5x9va","uzwmyt","vrf156","vt3zd","vxqpmk","vy32o3","vysxa2","wh8ru5","whkliq","wmthtj","wozwf2","wv483q","wxuf7g","xh3z5n","xmv84","y0p2fa","y47uu9","y47vh6","y480sr","y48p5t","y48vvv","y4a59b","y5covq","y5nf39","y5o926","y6ctb4","y6cwo0","y71j2c","y71krd","y71sb5","y71t5c","y7294m","y72clc","y7qy0x","y7siit","y8h6pa","y9vz1c","y9w8a4","y9wqv9","yakjyk","yakrgj","yalcjj","yamazs","yamzt0","ycpbmr","ycplpt","ycpne9","ydeauu","ydey99","ye4ick","ye4k1y","ye4nbi","yet6js","yetz3r","yfilm7","yfit67","yfk3di","yg8bh2","yg8e4b","yg8prc","yg8t8u","yga97u","ygy8b2","yloqx5","ylv8yi","ym5v8g","ymlfnw","ymlfqr","ymlghl","ymmhk9","yna8xd","ynaut0","ynb6gv","ynzm9f","ynzqkb","yo0d93","yo0exj","yoozzf","yopdwu","yopsas","yorcli","ypejuk","ypf6ir","yqtn46","yqty0s","yxzn22","z44a0f","z91r42","zgx9o9","zgxakc","zgyul0","zgyuwx","zh1416","zh141b","zh141y","zh148r","zh15qi","zh1600","zh16m8","zh16mw","zh2nhh","zh2nho","zh2nhs","zh2nht","zh2o9f","zh2oac","zh2pxx","zh3fpl","zh3gx8","zh48v6","zh6itx","zh6j18","zh6jo6","zh6kq9","zh79uz","zh7cgj","zh81l8","zh81lf","zh81lw","zh82gu","zh836i","zh83am","zh8465","zh846q","zh8tcg","zh8u66","zh8u80","zh8u8x","zh8vwi","zh9l22","zh9l2r","zh9l40","zh9njz","zhact4","zhadwr","zhaf9c","zhb4j9","zhb4p3","zhb739","zhbw9i","zhbwaq","zhbxwz","zhbym6","zhcnyq","zhcnz6","zhcpnf","zhcpph","zhcqkc","zhcqkn","zhdi5e","zhe7g7","zhe8no","zhea07","zhf0a9","zhf1qy","zhkd9g","zhkeve","zhkey6","zhkfeo","zhkfus","zhl50g","zhl6ni","zhl73z","zhlxlc","zhlzbn","zhmogy","zhmomu","zhmp8u","zhmpdf","zhmps3","zhmq5i","zhmqvi","zhmr0r","zhngac","zhngex","zhngil","zhngm9","zhngx9","zhngy6","zhnh00","zhnhvr","zhni73","zhni80","zhni8x","zhnijx","zhnir8","zhnirs","zhniru","zho7wx","zho7wz","zho83c","zho849","zho9lf","zhp0po","zhprcz","zhprni","zhrato","zhrau3","zhrbjl","zhrddh","zr8i6g","zxwv2a"]; // AUDIO_KEYS_INJECT
+const LOCAL_AUDIO = { ready:true, keys:new Set(AUDIO_KEYS) };
 
 function fallbackDevice(t, seq, opts, onEnd){
   const u = deviceSpeak(t, opts||{}, ()=>{ if(seq===VOICE_SEQ){ updateVoiceNote(); onEnd&&onEnd(); } });
@@ -860,6 +869,100 @@ function stopVoice(){
   try{ speechSynthesis.cancel(); }catch(e){}
 }
 
+/* ---------- تمرين الكتابة على السبورة التفاعلية ---------- */
+let WCV=null;
+function tplWrite(L){
+  const glyph = L.letter==='ه' ? 'هـ' : L.letter;
+  const forms = L.forms || [
+    L.connects ? L.letter+'ـ' : L.letter,
+    'ـ'+L.letter+(L.connects?'ـ':''),
+    'ـ'+L.letter
+  ];
+  const word = plain(L.words[0].w);
+  const chants = LETTER_CHANTS[L.id]||[];
+  const sentences = [L.sentence, ...chants].slice(0,3);
+  return `<section class="slide">
+    <h2>✍️ تَمْرِينُ الكِتَابَةِ — حَرْفُ ${L.name}</h2>
+    <p class="sub">تَتَبَّعُ الحَرْفَ بِأَشْكَالِهِ بِالإِصْبَعِ أَوْ بِالقَلَمِ عَلَى السَّبُورَةِ التَّفَاعُلِيَّةِ</p>
+    <div class="wTools">
+      <span class="wtLbl">لَوْنُ القَلَمِ:</span>
+      <button class="penDot sel" style="background:#1a237e" onclick="setPen(this,'#1a237e')"></button>
+      <button class="penDot" style="background:#c62828" onclick="setPen(this,'#c62828')"></button>
+      <button class="penDot" style="background:#2e7d32" onclick="setPen(this,'#2e7d32')"></button>
+      <button class="penDot" style="background:#e65100" onclick="setPen(this,'#e65100')"></button>
+      <button class="penDot" style="background:#111" onclick="setPen(this,'#111')"></button>
+      <span class="wtLbl">السَّمَاكَةُ:</span>
+      <button class="penDot thick" onclick="setPenW(this,4)" title="رَفِيعٌ"><span style="width:4px;height:4px;background:#fff;border-radius:50%;display:block"></span></button>
+      <button class="penDot thick" onclick="setPenW(this,7)" title="مُتَوَسِّطٌ"><span style="width:7px;height:7px;background:#fff;border-radius:50%;display:block"></span></button>
+      <button class="penDot thick" onclick="setPenW(this,11)" title="غَلِيظٌ"><span style="width:11px;height:11px;background:#fff;border-radius:50%;display:block"></span></button>
+      <button class="iconBtn" style="background:#8d7460" onclick="wcvUndo()">↩️ تَرَاجُعْ</button>
+      <button class="iconBtn" style="background:#e53935" onclick="wcvClear()">🧽 مَسْحُ اللَّوْحِ</button>
+    </div>
+    <canvas id="wcv"></canvas>
+    <div class="wSent">
+      <div class="wsTitle">📖 جُمَلٌ لِلْحَرْفِ — اِقْرَؤُهَا بِصَوْتٍ عَالٍ ثُمَّ اُكْتُبُوا مِثْلَهَا فِي دَفَاتِرِكُمْ:</div>
+      ${sentences.map(s=>`<div class="wsLine" onclick="speak('${s}')">🔊 ${s}</div>`).join('')}
+    </div>
+  </section>`;
+}
+function initWriteCanvas(L){
+  const cv=document.getElementById('wcv'); if(!cv) return;
+  const dpr=Math.min(2, window.devicePixelRatio||1);
+  const w=cv.clientWidth||600, h=cv.clientHeight||300;
+  cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
+  const ctx=cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
+  WCV={cv,ctx,w,h,strokes:[],drawing:null,color:'#1a237e',width:7,L};
+  const pt=e=>{ const r=cv.getBoundingClientRect(); return {x:e.clientX-r.left, y:e.clientY-r.top}; };
+  cv.onpointerdown=e=>{ e.preventDefault(); try{cv.setPointerCapture(e.pointerId);}catch(x){} WCV.drawing={color:WCV.color,width:WCV.width,pts:[pt(e)]}; redrawWcv(); };
+  cv.onpointermove=e=>{ if(!WCV||!WCV.drawing) return; WCV.drawing.pts.push(pt(e)); redrawWcv(); };
+  const end=()=>{ if(WCV&&WCV.drawing){ if(WCV.drawing.pts.length>1) WCV.strokes.push(WCV.drawing); WCV.drawing=null; redrawWcv(); } };
+  cv.onpointerup=end; cv.onpointercancel=end;
+  redrawWcv();
+}
+function redrawWcv(){
+  if(!WCV) return;
+  const {ctx,w,h,L}=WCV;
+  ctx.clearRect(0,0,w,h);
+  const glyph=L.letter==='ه'?'هـ':L.letter;
+  const forms=L.forms||[ L.connects?L.letter+'ـ':L.letter, 'ـ'+L.letter+(L.connects?'ـ':''), 'ـ'+L.letter ];
+  const rows=[
+    {y:h*0.30, items:[glyph, ...forms], maxS:w*0.12},
+    {y:h*0.74, items:[plain(L.words[0].w)], maxS:w*0.10}
+  ];
+  rows.forEach(r=>{
+    const size=Math.min((w/Math.max(r.items.length,1))*0.5, h*0.28, r.maxS);
+    /* خطوط الدفتر المنقطة */
+    ctx.save();
+    ctx.lineWidth=2; ctx.strokeStyle='#f0e4c9';
+    [[-0.58],[0.26]].forEach(k=>{ ctx.beginPath(); ctx.moveTo(w*0.03, r.y+size*k[0]); ctx.lineTo(w*0.97, r.y+size*k[0]); ctx.stroke(); });
+    ctx.setLineDash([9,9]); ctx.strokeStyle='#e8d7ae';
+    ctx.beginPath(); ctx.moveTo(w*0.03, r.y-size*0.18); ctx.lineTo(w*0.97, r.y-size*0.18); ctx.stroke();
+    ctx.restore();
+    /* الحروف المنقطة للتتبع */
+    ctx.save();
+    ctx.setLineDash([2,6]); ctx.lineWidth=1.4; ctx.strokeStyle='#bfa87f';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.font='700 '+Math.round(size)+'px "Baloo Bhaijaan 2","Segoe UI",sans-serif';
+    const n=r.items.length, gap=w/n;
+    r.items.forEach((t,i)=>ctx.strokeText(t, gap*(i+0.5), r.y+size*0.05));
+    ctx.restore();
+  });
+  /* حبر الطالب */
+  const all=WCV.drawing?[...WCV.strokes,WCV.drawing]:WCV.strokes;
+  ctx.save(); ctx.lineCap='round'; ctx.lineJoin='round';
+  all.forEach(s=>{
+    ctx.strokeStyle=s.color; ctx.lineWidth=s.width;
+    ctx.beginPath();
+    s.pts.forEach((p,i)=> i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
+    ctx.stroke();
+  });
+  ctx.restore();
+}
+function setPen(btn,c){ if(!WCV) return; WCV.color=c; document.querySelectorAll('.penDot:not(.thick)').forEach(b=>b.classList.remove('sel')); if(btn) btn.classList.add('sel'); }
+function setPenW(btn,wpx){ if(!WCV) return; WCV.width=wpx; document.querySelectorAll('.penDot.thick').forEach(b=>b.classList.remove('sel')); if(btn) btn.classList.add('sel'); }
+function wcvUndo(){ if(WCV){ WCV.strokes.pop(); redrawWcv(); } }
+function wcvClear(){ if(WCV){ WCV.strokes=[]; redrawWcv(); } }
+
 /* ---------- قوالب الشرائح ---------- */
 function themeOf(sl){
   if(sl.L) return sl.L;
@@ -883,7 +986,7 @@ function tplCover(){
     <div class="letterStrip">${strip}</div>
     <div class="namesBar">
       <div class="nameChip"><span class="lbl">🎓 عَمَلُ الطَّالِبِ:</span> ${STUDENT}</div>
-      <div class="nameChip"><span class="lbl">👨‍🏫 الأُسْتَاذُ:</span> ${TEACHER}</div>
+      <div class="nameChip"><span class="lbl">📘 الأُسْتَاذُ:</span> ${TEACHER}</div>
     </div>
     <div class="from" style="font-size:clamp(16px,2.6vw,26px);color:#8a7561">شَرَائِحُ تَفَاعُلِيَّةٌ مُمْتِعَةٌ لِلْمَعْلِمِ وَالطُّلَّابِ</div>
     <button class="startBtn" onclick="go(1)">لِنَبْدَأِ الرِّحْلَةَ 🚀</button>
@@ -928,7 +1031,7 @@ function tplCard(L){
         <div class="sentenceCard">${L.senIc} ${hl(L.words[0].w)} — ${L.sentence}</div>
         <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
           <button class="iconBtn" style="font-size:clamp(12px,1.9vw,18px);background:#2e9e5b" onclick="speak('حَرْفُ ${L.name}ِ. ${L.sentence}')">🔊 اِسْتَمِعْ</button>
-          <button class="iconBtn" style="font-size:clamp(12px,1.9vw,18px)" onclick="openSongById('L_${L.id}')">🎵 نَشِيدُ حَرْفِ ${L.name}</button>
+          <button class="iconBtn" style="font-size:clamp(12px,1.9vw,18px)" onclick="openSongById('L_${L.id}')">✨ نَشِيدُ حَرْفِ ${L.name}</button>
         </div>
       </div>
     </div>
@@ -987,7 +1090,7 @@ function tplWords(L){
 }
 
 /* ---------- محرك النشاط (يُوَلِّدُ أَسْئِلَةً جَدِيدَةً كُلَّ مَرَّةٍ) ---------- */
-const PRAISE = ['أَحْسَنْتُمْ! 🎉','مُمْتَازٌ! 🌟','رَائِعٌ جِدًّا! 👏','عَمَلٌ بُطْلِيٌّ! 🦸','بَارَكَ اللهُ فِيكُمْ! 🎊'];
+const PRAISE = ['أَحْسَنْتُمْ! 🎉','مُمْتَازٌ! 🌟','رَائِعٌ جِدًّا! ✨','عَمَلٌ رَائِعٌ! ⭐','بَارَكَ اللهُ فِيكُمْ! 🎊'];
 function allWords(){ /* كُلُّ الكَلِمَاتِ (كَلِمَاتُ + مَوَاضِعُ) مَعَ حَرْفِهَا */
   const out=[];
   LETTERS.forEach(L=>{ L.words.forEach(w=>out.push({w:w.w,e:w.e,L})); L.positions.forEach(p=>out.push({w:p.w,e:p.e,L})); });
@@ -1266,24 +1369,35 @@ function pickRevFind(btn,ok,ci){
   }
 }
 
-/* ---------- الشهادة: يكتب الأستاذ الاسم ثم ينشئها ---------- */
-const CERT = { made:false, name:'', teacher:'' };
+/* ---------- الشهادة: يعدّل الأستاذ كل النصوص ثم ينشئها ---------- */
+const CERT = { made:false, name:'', teacher:'', title:'', grant:'', achieve:'' };
 try{ Object.assign(CERT, JSON.parse(localStorage.getItem('hurufCert')||'{}')); }catch(e){}
 function certDate(){
   try{ return new Date().toLocaleDateString('ar', {year:'numeric', month:'long', day:'numeric'}); }
   catch(e){ return ''; }
 }
+const CERT_DEF = {
+  title:'شَهَادَةُ تَفَوُّقٍ',
+  grant:'تُمْنَحُ بِكُلِّ فَخْرٍ وَاعْتِزَازٍ إِلَى الطَّالِبِ',
+  achieve:'لِإِتْمَامِهِ رِحْلَةَ الحُرُوفِ الهِجَائِيَّةِ كَامِلَةً مِنَ الأَلِفِ إِلَى اليَاءِ بِاجْتِهَادٍ وَتَمَيُّزٍ'
+};
 function tplCert(){
   if(!CERT.made){
     return `<section class="slide">
       <div class="certForm">
         <div class="certRibbon">🏆</div>
-        <h2 style="margin:4px 0;color:#b8860b">إِعْدَادُ شَهَادَةِ التَّفَوُّقِ</h2>
-        <p class="sub" style="margin:4px 0 10px">يَكْتُبُ الأُسْتَاذُ اسْمَ الطَّالِبِ ثُمَّ يَضْغَطُ «إِنْشَاءَ الشَّهَادَةِ»</p>
+        <h2 style="margin:4px 0;color:#b8860b">إِعْدَادُ الشَّهَادَةِ</h2>
+        <p class="sub" style="margin:4px 0 10px">عَدِّلِ النُّصُوصَ كَمَا تَشَاءُ (أَوِ اتْرُكْهَا كَمَا هِيَ) ثُمَّ اِضْغَطْ «إِنْشَاءَ الشَّهَادَةِ»</p>
         <label class="cfLabel">🎓 اِسْمُ الطَّالِبِ</label>
         <input id="certName" class="cfInput" value="${CERT.name||STUDENT}" autocomplete="off">
-        <label class="cfLabel">👨‍🏫 اِسْمُ الأُسْتَاذِ</label>
+        <label class="cfLabel">📘 اِسْمُ الأُسْتَاذِ</label>
         <input id="certTeacher" class="cfInput" value="${CERT.teacher||TEACHER}" autocomplete="off">
+        <label class="cfLabel">عُنْوَانُ الشَّهَادَةِ</label>
+        <input id="certTitle" class="cfInput" value="${CERT.title||CERT_DEF.title}" autocomplete="off">
+        <label class="cfLabel">سَطْرُ المَنْحِ</label>
+        <input id="certGrant" class="cfInput" value="${CERT.grant||CERT_DEF.grant}" autocomplete="off">
+        <label class="cfLabel">سَطْرُ الإِنْجَازِ (يُلْحَقُ بِهِ عَدَدُ النُّجُومِ تِلْقَائِيًّا)</label>
+        <textarea id="certAchieve" class="cfInput" rows="2" style="resize:vertical;line-height:1.8">${CERT.achieve||CERT_DEF.achieve}</textarea>
         <div style="margin-top:14px">
           <button class="startBtn" style="background:linear-gradient(180deg,#ffd76e,#e8a80c);box-shadow:0 8px 0 #b8860b" onclick="makeCert()">🎓 إِنْشَاءُ الشَّهَادَةِ</button>
         </div>
@@ -1297,10 +1411,10 @@ function tplCert(){
       <div class="certCorner c1">✦</div><div class="certCorner c2">✦</div><div class="certCorner c3">✦</div><div class="certCorner c4">✦</div>
       <div class="certRibbon">🎗️</div>
       <div class="certStars">${'⭐'.repeat(starCount)}</div>
-      <h1 class="certTitle">شَهَادَةُ تَفَوُّقٍ</h1>
-      <p class="certLine">تُمْنَحُ بِكُلِّ فَخْرٍ وَاعْتِزَازٍ إِلَى الطَّالِبِ</p>
+      <h1 class="certTitle">${CERT.title||CERT_DEF.title}</h1>
+      <p class="certLine">${CERT.grant||CERT_DEF.grant}</p>
       <div class="certName">${CERT.name||STUDENT}</div>
-      <p class="certLine">لِإِتْمَامِهِ رِحْلَةَ الحُرُوفِ الهِجَائِيَّةِ كَامِلَةً مِنَ <b>الأَلِفِ</b> إِلَى <b>اليَاءِ</b> بِاجْتِهَادٍ وَتَمَيُّزٍ،<br>وَجَمْعِ <b style="color:#b8860b">${toAr(total)}</b> نَجْمَةً مِنْ ${toAr(MAX_STARS)} نَجْمَةٍ</p>
+      <p class="certLine">${CERT.achieve||CERT_DEF.achieve}،<br>وَجَمْعِ <b style="color:#b8860b">${toAr(total)}</b> نَجْمَةً مِنْ ${toAr(MAX_STARS)} نَجْمَةٍ</p>
       <div class="certMedal emoji">🏅</div>
       <div class="certSigns">
         <div><div class="signLine"></div><div>أُسْتَاذُ الصَّفِّ: ${CERT.teacher||TEACHER}</div></div>
@@ -1308,7 +1422,7 @@ function tplCert(){
       </div>
       <div class="certTools">
         <button class="iconBtn" style="background:#2e9e5b" onclick="window.print()">🖨️ طَبَاعَةٌ / حِفْظُ PDF</button>
-        <button class="iconBtn" style="background:#b8860b" onclick="editCert()">✏️ تَعْدِيلُ الِاسْمِ</button>
+        <button class="iconBtn" style="background:#b8860b" onclick="editCert()">✏️ تَعْدِيلُ النَّصِّ</button>
         <button class="iconBtn" style="background:#8d7460" onclick="resetAll()">🔄 إِعَادَةُ الرِّحْلَةِ</button>
       </div>
     </div>
@@ -1317,6 +1431,9 @@ function tplCert(){
 function makeCert(){
   CERT.name=$('#certName').value.trim()||STUDENT;
   CERT.teacher=$('#certTeacher').value.trim()||TEACHER;
+  CERT.title=$('#certTitle').value.trim()||CERT_DEF.title;
+  CERT.grant=$('#certGrant').value.trim()||CERT_DEF.grant;
+  CERT.achieve=$('#certAchieve').value.trim()||CERT_DEF.achieve;
   CERT.made=true;
   try{ localStorage.setItem('hurufCert', JSON.stringify(CERT)); }catch(e){}
   render();
@@ -1341,6 +1458,7 @@ function render(){
     case 'positions': html=tplPositions(sl.L); break;
     case 'harakat':   html=tplHarakat(sl.L); break;
     case 'words':     html=tplWords(sl.L); break;
+    case 'write':     html=tplWrite(sl.L); break;
     case 'activity':  html=tplActivity(sl.L); break;
     case 'review':    html=tplReview(); break;
     case 'cert':      html=tplCert(); break;
@@ -1360,6 +1478,7 @@ function render(){
   $('#btnNext').disabled = cur===slides.length-1;
   if(sl.kind==='activity') renderQ();
   if(sl.kind==='review') renderRev();
+  if(sl.kind==='write') requestAnimationFrame(()=>initWriteCanvas(sl.L));
   if(sl.kind==='cert') setTimeout(()=>starBurst($('#stage .cert')),400);
   if(location.hash.slice(1)!==String(cur)) history.replaceState(null,'','#'+cur);
 }
@@ -1461,6 +1580,34 @@ const LETTER_CHANTS={
  w:['وَ وَ وَرْدَةْ 🌹','أَهْدِيهَا لِأُمِّي الْعَزِيزَةْ'],
  y:['يَ يَ يَدِي ✋','أَكْتُبُ بِهَا حُرُوفِي'],
 };
+/* إزالة الرموز الموسيقية وصور ذوات الأرواح — استبدال ببدائل مناسبة (جماد) */
+const EMAP={
+  '👨‍👩‍👧‍👦':'🏠','👨‍🏫':'📘','👨‍⚕️':'💊','🦸':'⭐','👏':'✨','🤗':'☕','🤝':'💚','👮':'🚓','👬':'🎒','🤓':'💡',
+  '🙂':'✨','💇':'✂️','👨':'👕','👦':'🧢','👧':'🎀','👆':'🧤','🖐️':'🧤','✋':'🧤','💪':'🎽','👄':'🍽️','👁️':'👓',
+  '🧠':'💡','🦵':'👖','🦶':'👞','🐰':'🥕','🐭':'🧀','🦁':'👑','🦆':'💧','🦊':'🌲','🐪':'🏜️','🐔':'🥚','🐴':'🏟️',
+  '🐑':'🌿','🐻':'🍯','🐓':'🌅','🐺':'🌕','🦒':'🍃','🐄':'🥛','🐟':'🌊','🐳':'🌊','🦈':'🌊','🐊':'🏞️','🐦':'☁️',
+  '🦅':'☁️','🕊️':'🌸','🐝':'🌼','🦋':'🌸','🐘':'🌴','🦔':'🌰','🐒':'🍌','🐵':'🍌','🐕':'🦴','🦌':'🏜️','🐸':'🌿',
+  '🦎':'⛰️','🐢':'🌊','🎵':'✨','🎶':'✨','🎼':'✨','🎙️':'🔊'
+};
+const EKEYS=Object.keys(EMAP).sort((a,b)=>b.length-a.length);
+function emap(s){
+  let t=String(s);
+  for(const k of EKEYS){ if(t.includes(k)) t=t.split(k).join(EMAP[k]); }
+  return t;
+}
+(function sanitizeEmojis(){
+  LETTERS.forEach(L=>{
+    L.senIc=emap(L.senIc);
+    L.positions.forEach(p=>{ p.e=emap(p.e); });
+    L.harakat.forEach(h=>{ h.e=emap(h.e); });
+    L.words.forEach(w=>{ w.e=emap(w.e); });
+  });
+  Object.keys(LETTER_CHANTS).forEach(k=>{ LETTER_CHANTS[k]=LETTER_CHANTS[k].map(emap); });
+  GENERAL_SONGS.forEach(s=>{ s.lines=s.lines.map(emap); s.ic=emap(s.ic); });
+  PRAISE.forEach((p,i)=>{ PRAISE[i]=emap(p); });
+  try{ POOL.forEach(x=>{ x.e=emap(x.e); }); }catch(e){} /* كلمات الأنشطة أيضًا */
+})();
+
 const SONGS=[
   ...GENERAL_SONGS,
   ...LETTERS.map(L=>({id:'L_'+L.id, ic:L.letter==='ه'?'هـ':L.letter, hue:L.hue, title:'نَشِيدُ حَرْفِ '+L.name, lines:LETTER_CHANTS[L.id]})),
@@ -1483,10 +1630,10 @@ function openSongs(){ buildSongList(); $('#menu').classList.remove('open'); $('#
 function updateVoiceNote(){
   const el=$('#voiceNote'); if(!el) return;
   const set=(bg,bd,fg,txt)=>{ el.style.background=bg; el.style.borderColor=bd; el.style.color=fg; el.textContent=txt; };
-  if(LOCAL_AUDIO.ready){ set('#e8f7ee','#2e9e5b','#1d6e3c','🎙️ صَوْتٌ بَشَرِيٌّ مُسَجَّلٌ ('+toAr(LOCAL_AUDIO.keys.size)+' مَقْطَعًا) — يَعْمَلُ دُونَ إِنْتَرْنِتٍ'); return; }
+  if(LOCAL_AUDIO.ready){ set('#e8f7ee','#2e9e5b','#1d6e3c','🔊 صَوْتٌ بَشَرِيٌّ مُسَجَّلٌ ('+toAr(LOCAL_AUDIO.keys.size)+' مَقْطَعًا) — يَعْمَلُ دُونَ إِنْتَرْنِتٍ'); return; }
   const vs=('speechSynthesis' in window)?speechSynthesis.getVoices():[];
   const natural=vs.find(v=>/^ar/i.test(v.lang)&&/online|natural/i.test(v.name));
-  if(natural){ set('#e8f7ee','#2e9e5b','#1d6e3c','🎙️ صَوْتٌ بَشَرِيٌّ طَبِيعِيٌّ (Edge)'); return; }
+  if(natural){ set('#e8f7ee','#2e9e5b','#1d6e3c','🔊 صَوْتٌ بَشَرِيٌّ طَبِيعِيٌّ (Edge)'); return; }
   set('#fff3d6','#e8b94a','#8a6100','🔊 الصَّوْتُ: صَوْتُ الجِهَازِ');
 }
 
@@ -1524,7 +1671,7 @@ function renderSongCard(){
   $('#songCard').innerHTML = `
     <div class="songTitle">${s.ic} ${s.title}</div>
     ${songLines(s).map((l,k)=>`<div class="songLine" data-k="${k}">${l}</div>`).join('')}
-    <div class="songNotes">🎶 🎵 🎶</div>`;
+    <div class="songNotes">✦ ✨ ✦</div>`;
 }
 function toggleKaroake(){ if(songTimer || singing){ stopKaroake(); } else { startKaroake(); } }
 function startKaroake(){
