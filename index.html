@@ -4,9 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>رحلة الحروف الهجائية — من الألف إلى الياء — الصف الأول الابتدائي</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* الخط محلي بالكامل — يعمل دون إنترنت */
+  @font-face{
+    font-family:'Baloo Bhaijaan 2';
+    font-style:normal;
+    font-weight:400 800;
+    font-display:swap;
+    src:url('fonts/baloo-arabic.woff2') format('woff2');
+    unicode-range:U+0600-06FF,U+0750-077F,U+0870-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC,U+102E0-102FB,U+10E60-10E7E,U+10EC2-10EC7,U+10EC9-10EEE,U+10EF0-10EFF,U+1EE00-1EE03,U+1EE05-1EE1F,U+1EE21-1EE22,U+1EE24,U+1EE27,U+1EE29-1EE32,U+1EE34-1EE37,U+1EE39,U+1EE3B,U+1EE42,U+1EE47,U+1EE49,U+1EE4B,U+1EE4D-1EE4F,U+1EE51-1EE52,U+1EE54,U+1EE57,U+1EE59,U+1EE5B,U+1EE5D,U+1EE5F,U+1EE61-1EE62,U+1EE64,U+1EE67-1EE6A,U+1EE6C-1EE72,U+1EE74-1EE77,U+1EE79-1EE7C,U+1EE7E,U+1EE80-1EE89,U+1EE8B-1EE9B,U+1EEA1-1EEA3,U+1EEA5-1EEA9,U+1EEAB-1EEBB,U+1EEF0-1EEF1;
+  }
+  @font-face{
+    font-family:'Baloo Bhaijaan 2';
+    font-style:normal;
+    font-weight:400 800;
+    font-display:swap;
+    src:url('fonts/baloo-latin.woff2') format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+  }
+</style>
 <style>
   :root{
     --c:#E8641C;            /* لون القسم الحالي (يتغير بالجافاسكربت) */
@@ -27,18 +43,18 @@
     user-select:none;
   }
   /* ===== خلفية زخرفية ===== */
-  #bg{position:fixed;inset:0;z-index:0;overflow:hidden;}
-  #bg .blob{position:absolute;border-radius:50%;filter:blur(2px);opacity:.16;animation:float 14s ease-in-out infinite alternate;}
-  #bg .star{position:absolute;color:#e8b94a;opacity:.5;animation:twinkle 3s ease-in-out infinite;}
+  #bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+  #bg .blob{position:absolute;border-radius:50%;filter:blur(2px);opacity:.10;animation:float 14s ease-in-out infinite alternate;}
+  #bg .star{position:absolute;color:#e8b94a;opacity:.30;animation:twinkle 3s ease-in-out infinite;pointer-events:none;}
   @keyframes float{from{transform:translateY(-24px) scale(1);}to{transform:translateY(28px) scale(1.08);}}
-  @keyframes twinkle{0%,100%{opacity:.15;transform:scale(.8);}50%{opacity:.7;transform:scale(1.15);}}
+  @keyframes twinkle{0%,100%{opacity:.10;transform:scale(.8);}50%{opacity:.42;transform:scale(1.08);}}
 
   #app{position:relative;z-index:1;height:100dvh;display:flex;flex-direction:column;}
 
   /* ===== الشريط العلوي ===== */
   header{
     display:flex;align-items:center;gap:12px;
-    padding:10px 18px;background:#fffdf8cc;backdrop-filter:blur(6px);
+    padding:10px 18px;background:#fffdf8f5;backdrop-filter:blur(6px);
     border-bottom:4px solid var(--c);flex-wrap:wrap;
   }
   .chip{
@@ -81,15 +97,18 @@
     display:inline-block;background:#fff;border:4px dashed var(--c);color:var(--c);
     font-weight:800;font-size:clamp(14px,2.4vw,22px);padding:6px 22px;border-radius:999px;margin-bottom:10px;
   }
-  .k-cover h1{font-size:clamp(34px,7vw,74px);color:var(--c);text-shadow:0 4px 0 #ffe3c9;}
+  .k-cover h1{font-size:clamp(30px,6.2vw,68px);color:var(--c);text-shadow:0 4px 0 #ffe3c9;}
   .k-cover .from{font-size:clamp(20px,4vw,40px);font-weight:800;color:#5d4a37;}
-  .letterStrip{display:flex;justify-content:center;gap:clamp(4px,1vw,12px);flex-wrap:wrap;margin:20px 0;}
-  .letterStrip span{
-    width:clamp(44px,7vw,72px);height:clamp(44px,7vw,72px);border-radius:50%;
-    display:flex;align-items:center;justify-content:center;color:#fff;
-    font-size:clamp(22px,4vw,40px);font-weight:800;
+  .letterStrip{display:flex;justify-content:center;gap:clamp(4px,.8vw,10px);flex-wrap:wrap;margin:20px 0;}
+  .letterStrip button{
+    width:clamp(40px,6.2vw,64px);height:clamp(40px,6.2vw,64px);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;color:#fff;border:none;cursor:pointer;
+    font-family:inherit;font-size:clamp(20px,3.6vw,34px);font-weight:800;padding:0;
     box-shadow:0 6px 0 rgba(0,0,0,.14);animation:pop 1.6s ease-in-out infinite;
+    transition:transform .15s,box-shadow .15s;
   }
+  .letterStrip button:hover{transform:scale(1.12);box-shadow:0 8px 0 rgba(0,0,0,.18);}
+  .letterStrip button:active{transform:scale(.94);}
   @keyframes pop{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
   .startBtn{
     font-family:inherit;font-size:clamp(18px,3vw,30px);font-weight:800;color:#fff;
@@ -270,7 +289,7 @@
 
   /* ===== الطباعة: الشهادة فقط ===== */
   @media print{
-    header,footer,#bg,#spellBox,#menu,#songs,#speedPop,.certTools,.startBtn{display:none!important;}
+    header,footer,#bg,#spellBox,#menu,#writePop,#songs,#speedPop,.certTools,.startBtn{display:none!important;}
     html,body,#app{height:auto!important;overflow:visible!important;background:#fff;}
     main{padding:0;}
     .slide{display:block!important;overflow:visible!important;max-height:none;width:100%;}
@@ -278,7 +297,7 @@
   }
 
   /* ===== الشريط السفلي ===== */
-  footer{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 18px;background:#fffdf8cc;backdrop-filter:blur(6px);border-top:4px solid var(--c);}
+  footer{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 18px;background:#fffdf8f5;backdrop-filter:blur(6px);border-top:4px solid var(--c);}
   .navBtn{
     font-family:inherit;font-weight:800;font-size:clamp(15px,2.4vw,23px);color:#fff;background:var(--c);
     border:none;border-radius:999px;padding:10px 26px;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.18);
@@ -297,6 +316,16 @@
   #menu.open{display:flex;animation:rise .35s ease both;}
   #menu .head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
   #menu h2{margin:0;color:#8a5a1c;}
+
+  /* ===== نافذة تمارين الكتابة ===== */
+  #writePop{
+    position:fixed;inset:0;background:#fffcf4f2;backdrop-filter:blur(8px);z-index:52;
+    display:none;flex-direction:column;padding:18px clamp(12px,4vw,50px);overflow-y:auto;
+  }
+  #writePop.open{display:flex;animation:rise .35s ease both;}
+  #writePop .head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
+  #writePop h2{margin:0;color:#8a5a1c;}
+  .offlineStatus{margin-top:16px;text-align:center;font-weight:800;color:#1d6e3c;background:#e8f7ee;border:2px dashed #2e9e5b;border-radius:16px;padding:8px 16px;font-size:clamp(12px,2vw,17px);}
   .closeBtn{
     font-family:inherit;background:#e53935;color:#fff;border:none;border-radius:14px;font-weight:800;
     font-size:clamp(15px,2.4vw,22px);padding:8px 22px;cursor:pointer;box-shadow:0 4px 0 #a02020;
@@ -383,6 +412,7 @@
     <button class="iconBtn" id="btnSpeed" title="سرعة النطق والتهجئة">⏱️</button>
     <button class="iconBtn" id="btnSound" title="تشغيل/إيقاف الصوت">🔊</button>
     <button class="iconBtn" id="btnSongs" title="نافذة الأناشيد">✨ <span class="btxt">الأَنَاشِيد</span></button>
+    <button class="iconBtn" id="btnWrite" title="تمارين الكتابة">✍️ <span class="btxt">الكِتَابَة</span></button>
     <button class="iconBtn" id="btnMenu" title="فهرس الحروف">☰</button>
     <button class="iconBtn" id="btnFs" title="ملء الشاشة">⛶</button>
   </header>
@@ -404,6 +434,15 @@
     <button class="closeBtn" id="btnClose">إِغْلَاق ✕</button>
   </div>
   <div class="tiles" id="menuTiles"></div>
+  <div id="offlineStatus" class="offlineStatus">⤓ يُجَهَّزُ المَوْقِعُ لِلْعَمَلِ دُونَ اِتِّصَال…</div>
+</div>
+
+<div id="writePop">
+  <div class="head">
+    <h2>✍️ تَمَارِينُ الكِتَابَةِ — اِخْتَرْ حَرْفًا</h2>
+    <button class="closeBtn" id="btnCloseWrite">إِغْلَاق ✕</button>
+  </div>
+  <div class="tiles" id="writeTiles"></div>
 </div>
 
 <div id="speedPop">
@@ -687,16 +726,31 @@ let reviewStars = 0;
 let cur = 0;
 
 /* ---------- الخلفية الزخرفية ---------- */
-(function makeBg(){
-  const bg=$('#bg'); let html='';
+function makeBg(){
+  const bg=$('#bg'); if(!bg) return;
+  let html='';
   for(let i=0;i<7;i++){
     const h=Math.round(Math.random()*360), s=90+Math.random()*160;
     html+=`<div class="blob" style="width:${s}px;height:${s}px;background:hsl(${h},80%,55%);right:${Math.random()*95}%;top:${Math.random()*95}%;animation-delay:${(Math.random()*8).toFixed(1)}s"></div>`;
   }
+  /* النجوم توضع في الهوامش الجانبية فقط — لا تتداخل مع الكلام أبدًا */
   const em=['✦','✧','⭐','🌟'];
-  for(let i=0;i<14;i++) html+=`<div class="star" style="right:${Math.random()*97}%;top:${Math.random()*97}%;font-size:${10+Math.random()*18}px;animation-delay:${(Math.random()*3).toFixed(1)}s">${rnd(em)}</div>`;
+  const vw=window.innerWidth||1200;
+  const band=Math.max(0,(vw-Math.min(1150,vw-8))/2);
+  if(band>=90){
+    for(let i=0;i<14;i++){
+      const left=i%2===0;
+      const x=Math.round(Math.random()*Math.max(4,band-46));
+      const y=(2+Math.random()*94).toFixed(1);
+      const fs=Math.round(10+Math.random()*16);
+      html+=`<div class="star" style="${left?'left':'right'}:${x}px;top:${y}%;font-size:${fs}px;animation-delay:${(Math.random()*3).toFixed(1)}s">${rnd(em)}</div>`;
+    }
+  }
   bg.innerHTML=html;
-})();
+}
+makeBg();
+let bgResizeT;
+window.addEventListener('resize',()=>{ clearTimeout(bgResizeT); bgResizeT=setTimeout(makeBg,250); });
 
 /* ---------- الصَّوْتُ: مَحَرِّكٌ بَشَرِيٌّ سَحَابِيٌّ + تَرَاجُعٌ لِصَوْتِ الجِهَازِ ---------- */
 const SOUND = { on:true, voice:null };
@@ -1062,18 +1116,24 @@ function applyTheme(L){
 const STUDENT='عبد الملك رامي الطلحي', TEACHER='محمد الباجوري';
 
 function tplCover(){
-  const strip = LETTERS.map((L,i)=>`<span style="background:hsl(${L.hue},78%,46%);animation-delay:${(i*.12).toFixed(2)}s">${L.letter}</span>`).join('');
+  const strip = LETTERS.map((L,i)=>{
+    const si = slides.findIndex(x=>x.kind==='card'&&x.L===L);
+    return `<button type="button" title="اِنْتِقَالٌ إِلَى حَرْفِ ${L.name}" style="background:hsl(${L.hue},78%,46%);animation-delay:${(i*.12).toFixed(2)}s" onclick="go(${si})">${L.letter==='ه'?'هـ':L.letter}</button>`;
+  }).join('');
   return `<section class="slide k-cover">
     <div><span class="badge">لُغَتِي الخَالِدَةُ • الصَّفُّ الأَوَّلُ الابْتِدَائِيُّ</span></div>
     <h1>رِحْلَةُ الحُرُوفِ الهِجَائِيَّةِ</h1>
     <div class="from">مِنَ الأَلِفِ <span class="emoji">🌟</span> إِلَى اليَاءِ</div>
-    <div class="letterStrip">${strip}</div>
+    <div class="letterStrip" style="margin:12px 0">${strip}</div>
+    <div class="sub" style="margin:-4px 0 8px">👆 اِضْغَطْ عَلَى أَيِّ حَرْفٍ لِلِانْتِقَالِ إِلَيْهِ مُبَاشَرَةً</div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="startBtn" onclick="go(1)">لِنَبْدَأِ الرِّحْلَةَ 🚀</button>
+      <button class="startBtn" style="background:linear-gradient(180deg,#5ec98a,#2e9e5b);box-shadow:0 8px 0 #1d6e3c" onclick="openWriteMenu()">✍️ تَمَارِينُ الكِتَابَةِ</button>
+    </div>
     <div class="namesBar">
       <div class="nameChip"><span class="lbl">🎓 عَمَلُ الطَّالِبِ:</span> ${STUDENT}</div>
-      <div class="nameChip"><span class="lbl">📘 الأُسْتَاذُ:</span> ${TEACHER}</div>
+      <div class="nameChip"><span class="lbl">📘 إِشْرَافُ الأُسْتَاذِ:</span> ${TEACHER}</div>
     </div>
-    <div class="from" style="font-size:clamp(16px,2.6vw,26px);color:#8a7561">شَرَائِحُ تَفَاعُلِيَّةٌ مُمْتِعَةٌ لِلْمَعْلِمِ وَالطُّلَّابِ</div>
-    <button class="startBtn" onclick="go(1)">لِنَبْدَأِ الرِّحْلَةَ 🚀</button>
   </section>`;
 }
 
@@ -1093,6 +1153,7 @@ function tplIndex(){
     <p class="sub">اِخْتَرْ حَرْفًا لِتَبْدَأَ مِنْهُ… كُلُّ حَرْفٍ فِيهِ خَمْسُ شَرَائِحَ</p>
     <div class="tiles">
       <button class="tile special" style="--tc2:#ffe3c9" onclick="go(${revI});closeMenu()"><div class="big emoji">🎯</div><div class="nm">لُعْبَةُ المُرَاجَعَةِ</div></button>
+      <button class="tile special" style="--tc2:#d9f7e6" onclick="openWriteMenu()"><div class="big emoji">✍️</div><div class="nm">تَمَارِينُ الكِتَابَةِ</div></button>
       <button class="tile special" style="--tc2:#ffd9ec" onclick="go(${certI});closeMenu()"><div class="big emoji">🏆</div><div class="nm">شَهَادَةُ التَّفَوُّقِ</div></button>
       ${tiles}
     </div>
@@ -1474,7 +1535,7 @@ function tplCert(){
         <p class="sub" style="margin:4px 0 10px">عَدِّلِ النُّصُوصَ كَمَا تَشَاءُ (أَوِ اتْرُكْهَا كَمَا هِيَ) ثُمَّ اِضْغَطْ «إِنْشَاءَ الشَّهَادَةِ»</p>
         <label class="cfLabel">🎓 اِسْمُ الطَّالِبِ</label>
         <input id="certName" class="cfInput" value="${CERT.name||STUDENT}" autocomplete="off">
-        <label class="cfLabel">📘 اِسْمُ الأُسْتَاذِ</label>
+        <label class="cfLabel">📘 اِسْمُ الأُسْتَاذِ (الإِشْرَاف)</label>
         <input id="certTeacher" class="cfInput" value="${CERT.teacher||TEACHER}" autocomplete="off">
         <label class="cfLabel">عُنْوَانُ الشَّهَادَةِ</label>
         <input id="certTitle" class="cfInput" value="${CERT.title||CERT_DEF.title}" autocomplete="off">
@@ -1501,7 +1562,7 @@ function tplCert(){
       <p class="certLine">${CERT.achieve||CERT_DEF.achieve}،<br>وَجَمْعِ <b style="color:#b8860b">${toAr(total)}</b> نَجْمَةً مِنْ ${toAr(MAX_STARS)} نَجْمَةٍ</p>
       <div class="certMedal emoji">🏅</div>
       <div class="certSigns">
-        <div><div class="signLine"></div><div>أُسْتَاذُ الصَّفِّ: ${CERT.teacher||TEACHER}</div></div>
+        <div><div class="signLine"></div><div>إِشْرَافُ الأُسْتَاذِ: ${CERT.teacher||TEACHER}</div></div>
         <div><div class="signLine"></div><div>التَّارِيخُ: ${certDate()}</div></div>
       </div>
       <div class="certTools">
@@ -1584,13 +1645,30 @@ function buildMenu(){
     </button>`;
   }).join('');
   $('#menuTiles').innerHTML=`
-    <button class="tile special" style="--tc2:#ffe9d2" onclick="go(0);closeMenu()"><div class="big emoji">🏠</div><div class="nm">الغِطَاء</div></button>
+    <button class="tile special" style="--tc2:#ffe9d2" onclick="go(0);closeMenu()"><div class="big emoji">🏠</div><div class="nm">الرَّئِيسِيَّة</div></button>
     <button class="tile special" style="--tc2:#fff3c9" onclick="go(1);closeMenu()"><div class="big emoji">🗺️</div><div class="nm">الفِهْرِس</div></button>
+    <button class="tile special" style="--tc2:#d9f7e6" onclick="closeMenu();openWriteMenu()"><div class="big emoji">✍️</div><div class="nm">تَمَارِينُ الكِتَابَة</div></button>
     <button class="tile special" style="--tc2:#ffe3c9" onclick="go(${slides.length-2});closeMenu()"><div class="big emoji">🎯</div><div class="nm">المُرَاجَعَة</div></button>
     <button class="tile special" style="--tc2:#ffd9ec" onclick="go(${slides.length-1});closeMenu()"><div class="big emoji">🏆</div><div class="nm">الشَّهَادَة</div></button>
     ${tiles}`;
 }
 function closeMenu(){ $('#menu').classList.remove('open'); }
+
+/* ---------- نافذة تمارين الكتابة: انتقال مباشر لأي حرف ---------- */
+function buildWriteMenu(){
+  $('#writeTiles').innerHTML=LETTERS.map(L=>{
+    const si=slides.findIndex(x=>x.kind==='write'&&x.L===L);
+    return `<button class="tile" style="--tc:hsl(${L.hue},78%,46%)" onclick="go(${si});closeWriteMenu()">
+      <div class="big">${L.letter==='ه'?'هـ':L.letter}</div>
+      <div class="nm">كِتَابَةُ ${L.name}</div>
+      <div class="st">✍️ تَمْرِين</div>
+    </button>`;
+  }).join('');
+}
+function openWriteMenu(){ buildWriteMenu(); $('#writePop').classList.add('open'); }
+function closeWriteMenu(){ $('#writePop').classList.remove('open'); }
+$('#btnWrite').onclick=openWriteMenu;
+$('#btnCloseWrite').onclick=closeWriteMenu;
 $('#btnMenu').onclick=()=>{ buildMenu(); $('#menu').classList.add('open'); };
 $('#btnClose').onclick=closeMenu;
 
@@ -1605,6 +1683,7 @@ document.addEventListener('keydown',e=>{
   if($('#speedPop').classList.contains('open')){ if(e.key==='Escape') toggleSpeedPop(false); return; }
   if($('#songs').classList.contains('open')){ if(e.key==='Escape') closeSongs(); return; }
   if($('#menu').classList.contains('open')){ if(e.key==='Escape') closeMenu(); return; }
+  if($('#writePop').classList.contains('open')){ if(e.key==='Escape') closeWriteMenu(); return; }
   if(e.key==='ArrowLeft'||e.key==='PageDown'||e.key===' ') go(cur+1);
   else if(e.key==='ArrowRight'||e.key==='PageUp') go(cur-1);
   else if(e.key==='Home') go(0);
@@ -1817,6 +1896,55 @@ $('#btnSound').onclick=()=>{
 const start=parseInt(location.hash.slice(1));
 cur = (!isNaN(start)&&start>=0&&start<slides.length)?start:0;
 render();
+
+/* ---------- العمل دون اتصال: حفظ الموقع والأصوات كاملة ---------- */
+const OFF={supported:('serviceWorker' in navigator)&&location.protocol!=='file:', total:0, done:0};
+function offlineMsg(t){ const el=document.getElementById('offlineStatus'); if(el) el.textContent=t; }
+async function initOffline(){
+  if(!OFF.supported){
+    offlineMsg('💾 لِلْعَمَلِ دُونَ اِتِّصَال: اِحْفَظْ مِلَفَّ الشَّرَائِحِ مَعَ مَجَلَّدَيْ audio وَ fonts');
+    return;
+  }
+  try{
+    const reg=await navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'});
+    await navigator.serviceWorker.ready;
+    let asked=false;
+    const ask=()=>{
+      if(asked) return;
+      const w=reg.active||navigator.serviceWorker.controller;
+      if(!w) return;
+      asked=true;
+      w.postMessage({type:'CACHE_ALL'});
+    };
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{ asked=false; ask(); });
+    navigator.serviceWorker.addEventListener('message',ev=>{
+      const d=ev.data||{};
+      if(d.type==='CACHE_PROGRESS'){
+        if(!d.total) return;
+        OFF.done=d.done; OFF.total=d.total;
+        const pct=d.total?Math.round(d.done/d.total*100):0;
+        offlineMsg(`⤓ يُحْفَظُ المَوْقِعُ لِلْعَمَلِ دُونَ اِتِّصَال… ${pct}٪`);
+      } else if(d.type==='CACHE_DONE'){
+        if(!d.total) return;
+        const cached = (typeof d.cached==='number')
+          ? d.cached
+          : (d.complete===false ? 0 : d.total);
+        OFF.done=cached; OFF.total=d.total;
+        const complete = (typeof d.complete==='boolean') ? d.complete : (cached===d.total);
+        if(complete){
+          offlineMsg(`✅ المَوْقِعُ جَاهِزٌ لِلْعَمَلِ دُونَ اِتِّصَال (${toAr(cached)} مِلَفًّا)`);
+        } else {
+          offlineMsg(`⚠️ حُفِظَ ${toAr(cached)} مِنْ ${toAr(d.total)} مِلَفًّا… سَيُكْمَلُ عِنْدَ تَوَفُّرِ الاِتِّصَال`);
+        }
+      }
+    });
+    offlineMsg('⤓ يُجَهَّزُ المَوْقِعُ لِلْعَمَلِ دُونَ اِتِّصَال…');
+    ask();
+  }catch(e){
+    offlineMsg('💾 لِلْعَمَلِ دُونَ اِتِّصَال: اِحْفَظْ مِلَفَّ الشَّرَائِحِ مَعَ مَجَلَّدَيْ audio وَ fonts');
+  }
+}
+initOffline();
 </script>
 </body>
 </html>
