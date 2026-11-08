@@ -239,7 +239,7 @@
   .certTools{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px;}
 
   /* ===== تمرين الكتابة ===== */
-  #wcv{width:100%;height:clamp(200px,40vh,340px);background:#fff;border:4px solid var(--c2);border-radius:22px;touch-action:none;display:block;box-shadow:0 6px 0 var(--c2);}
+  #wcv{width:100%;height:clamp(180px,30vh,270px);background:#fff;border:4px solid var(--c2);border-radius:22px;touch-action:none;display:block;box-shadow:0 6px 0 var(--c2);}
   .wTools{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:4px 0 10px;}
   .wtLbl{font-weight:800;font-size:clamp(12px,1.8vw,16px);color:#8a7561;}
   .penDot{width:30px;height:30px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #d9c8b0;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;}
@@ -561,28 +561,28 @@ const LETTERS = [
   harakat:[{n:'الفَتْحَة',s:'ضَ',w:'*ضَ*وْء',e:'💡'},{n:'الضَّمَّة',s:'ضُ',w:'*ضُ*حَى',e:'🌤️'},{n:'الكَسْرَة',s:'ضِ',w:'*ضِ*فْدَع',e:'🐸'}],
   words:[{w:'*ضِ*فْدَع',e:'🐸'},{w:'*ضَ*بّ',e:'🦎'},{w:'*ضَ*يْف',e:'🤗'},{w:'أَرْ*ضْ*',e:'🌍'}] },
 
-{ id:'t', letter:'ط', name:'الطَّاء', connects:false, dots:'لَيْسَ عَلَيْهِ نُقَطٌ', dotsIc:'⭕',
+{ id:'t', letter:'ط', name:'الطَّاء', connects:true, dots:'لَيْسَ عَلَيْهِ نُقَطٌ', dotsIc:'⭕',
   similar:'يُشْبِهُ الظَّاءَ، وَلَكِنَّهُ بِلَا نُقَطٍ',
   sentence:'طَائِرَةٌ تَطِيرُ فِي السَّمَاءِ.', senIc:'✈️',
   positions:[{w:'*طَ*ائِرَة',e:'✈️'},{w:'قِ*طَ*ار',e:'🚂'},{w:'قِ*طّ*',e:'🐱'}],
   harakat:[{n:'الفَتْحَة',s:'طَ',w:'*طَ*بْل',e:'🥁'},{n:'الضَّمَّة',s:'طُ',w:'*طُ*وب',e:'🧱'},{n:'الكَسْرَة',s:'طِ',w:'*طِ*بّ',e:'👨‍⚕️'}],
   words:[{w:'*طَ*ائِرَة',e:'✈️'},{w:'*طَ*مَاطِم',e:'🍅'},{w:'*طَ*بْل',e:'🥁'},{w:'*طَ*يْر',e:'🐦'}] },
 
-{ id:'th', letter:'ظ', name:'الظَّاء', connects:false, dots:'نُقْطَةٌ وَاحِدَةٌ فَوْقَهُ', dotsIc:'🔵',
+{ id:'th', letter:'ظ', name:'الظَّاء', connects:true, dots:'نُقْطَةٌ وَاحِدَةٌ فَوْقَهُ', dotsIc:'🔵',
   similar:'يُشْبِهُ الطَّاءَ مَعَ نُقْطَةٍ فَوْقَهُ',
   sentence:'ظَبْيٌ صَغِيرٌ يَرْكُضُ فِي الصَّحْرَاءِ.', senIc:'🦌',
   positions:[{w:'*ظَ*بْي',e:'🦌'},{w:'عَ*ظْ*م',e:'🦴'},{w:'حَافِ*ظْ*',e:'🛡️'}],
   harakat:[{n:'الفَتْحَة',s:'ظَ',w:'*ظَ*بْي',e:'🦌'},{n:'الضَّمَّة',s:'ظُ',w:'*ظُ*هْر',e:'☀️'},{n:'الكَسْرَة',s:'ظِ',w:'*ظِ*لّ',e:'🌳'}],
   words:[{w:'*ظَ*بْي',e:'🦌'},{w:'*ظَ*رْف',e:'✉️'},{w:'*ظُ*هْر',e:'☀️'},{w:'*ظِ*لّ',e:'🌳'}] },
 
-{ id:'a', letter:'ع', name:'العَيْن', connects:false, dots:'لَيْسَ عَلَيْهِ نُقَطٌ', dotsIc:'⭕',
+{ id:'a', letter:'ع', name:'العَيْن', connects:true, dots:'لَيْسَ عَلَيْهِ نُقَطٌ', dotsIc:'⭕',
   similar:'يُشْبِهُ الغَيْنَ، وَلَكِنَّهُ بِلَا نُقَطٍ',
   sentence:'عُصْفُورٌ صَغِيرٌ يُغَرِّدُ فَوْقَ الشَّجَرَةِ.', senIc:'🐦',
   positions:[{w:'*عِ*نَب',e:'🍇'},{w:'شَ*عْ*ر',e:'💇'},{w:'إِصْبَ*عَ*',e:'👆'}],
   harakat:[{n:'الفَتْحَة',s:'عَ',w:'*عَ*نَب',e:'🍇'},{n:'الضَّمَّة',s:'عُ',w:'*عُ*صْفُور',e:'🐦'},{n:'الكَسْرَة',s:'عِ',w:'*عِ*يد',e:'🎉'}],
   words:[{w:'*عِ*نَب',e:'🍇'},{w:'*عَ*صِير',e:'🧃'},{w:'*عُ*صْفُور',e:'🐦'},{w:'*عَ*يْن',e:'👁️'}] },
 
-{ id:'gh', letter:'غ', name:'الغَيْن', connects:false, dots:'نُقْطَةٌ وَاحِدَةٌ فَوْقَهُ', dotsIc:'🔵',
+{ id:'gh', letter:'غ', name:'الغَيْن', connects:true, dots:'نُقْطَةٌ وَاحِدَةٌ فَوْقَهُ', dotsIc:'🔵',
   similar:'يُشْبِهُ العَيْنَ مَعَ نُقْطَةٍ فَوْقَهُ',
   sentence:'غَزَالٌ رَشِيقٌ يَقْفِزُ فَوْقَ الرَّمْلِ.', senIc:'🦌',
   positions:[{w:'*غَ*زَال',e:'🦌'},{w:'رَ*غِ*يف',e:'🍞'},{w:'دِمَا*غْ*',e:'🧠'}],
@@ -873,17 +873,17 @@ function stopVoice(){
 let WCV=null;
 function tplWrite(L){
   const glyph = L.letter==='ه' ? 'هـ' : L.letter;
-  const forms = L.forms || [
+  const forms = [...new Set([glyph, ...(L.forms || [
     L.connects ? L.letter+'ـ' : L.letter,
     'ـ'+L.letter+(L.connects?'ـ':''),
     'ـ'+L.letter
-  ];
+  ])])];
   const word = plain(L.words[0].w);
   const chants = LETTER_CHANTS[L.id]||[];
   const sentences = [L.sentence, ...chants].slice(0,3);
   return `<section class="slide">
     <h2>✍️ تَمْرِينُ الكِتَابَةِ — حَرْفُ ${L.name}</h2>
-    <p class="sub">تَتَبَّعُ الحَرْفَ بِأَشْكَالِهِ بِالإِصْبَعِ أَوْ بِالقَلَمِ عَلَى السَّبُورَةِ التَّفَاعُلِيَّةِ</p>
+    <p class="sub">تَتَبَّعُوا النِّقَاطَ السَّوْدَاءَ لِرَسْمِ الحَرْفِ بِأَشْكَالِهِ بِالإِصْبَعِ أَوْ بِالقَلَمِ عَلَى السَّبُّورَةِ التَّفَاعُلِيَّةِ</p>
     <div class="wTools">
       <span class="wtLbl">لَوْنُ القَلَمِ:</span>
       <button class="penDot sel" style="background:#1a237e" onclick="setPen(this,'#1a237e')"></button>
@@ -918,6 +918,80 @@ function initWriteCanvas(L){
   const end=()=>{ if(WCV&&WCV.drawing){ if(WCV.drawing.pts.length>1) WCV.strokes.push(WCV.drawing); WCV.drawing=null; redrawWcv(); } };
   cv.onpointerup=end; cv.onpointercancel=end;
   redrawWcv();
+  /* إعادة الرسم بعد استقرار التنسيق وتحميل الخط */
+  setTimeout(fitWriteCanvas, 350);
+  try{ document.fonts.ready.then(()=>{ if(WCV && document.body.contains(WCV.cv)){ TRACE_CACHE.clear(); redrawWcv(); } }); }catch(e){}
+}
+/* ===== استخراج هيكل الحرف لرسمه بخط واحد ===== */
+const TRACE_CACHE = new Map();
+function thinMask(bin,W,H){
+  const idx=(x,y)=>y*W+x;
+  const mark=[];
+  let changed=true, guard=0;
+  while(changed && guard++<40){
+    changed=false;
+    for(let phase=0; phase<2; phase++){
+      mark.length=0;
+      for(let y=1;y<H-1;y++){
+        for(let x=1;x<W-1;x++){
+          const i=idx(x,y); if(!bin[i]) continue;
+          const p2=bin[idx(x,y-1)], p3=bin[idx(x+1,y-1)], p4=bin[idx(x+1,y)],
+                p5=bin[idx(x+1,y+1)], p6=bin[idx(x,y+1)], p7=bin[idx(x-1,y+1)],
+                p8=bin[idx(x-1,y)], p9=bin[idx(x-1,y-1)];
+          const B=p2+p3+p4+p5+p6+p7+p8+p9;
+          if(B<2||B>6) continue;
+          let A=0;
+          if(!p2&&p3)A++; if(!p3&&p4)A++; if(!p4&&p5)A++; if(!p5&&p6)A++;
+          if(!p6&&p7)A++; if(!p7&&p8)A++; if(!p8&&p9)A++; if(!p9&&p2)A++;
+          if(A!==1) continue;
+          if(phase===0){ if(p2&&p4&&p6) continue; if(p4&&p6&&p8) continue; }
+          else { if(p2&&p4&&p8) continue; if(p2&&p6&&p8) continue; }
+          mark.push(i);
+        }
+      }
+      if(mark.length){ changed=true; for(const i of mark) bin[i]=0; }
+    }
+  }
+}
+function traceSprite(text){
+  if(TRACE_CACHE.has(text)) return TRACE_CACHE.get(text);
+  const S=160;
+  const font='400 '+S+'px "Baloo Bhaijaan 2","Segoe UI",sans-serif';
+  const meas=document.createElement('canvas').getContext('2d');
+  meas.font=font;
+  const tw=Math.ceil(meas.measureText(text).width);
+  const pad=Math.ceil(S*0.24);
+  const W=tw+pad*2, H=Math.ceil(S*1.75), baseline=Math.ceil(S*1.28);
+  const c=document.createElement('canvas'); c.width=W; c.height=H;
+  const g=c.getContext('2d');
+  g.font=font; g.fillStyle='#000'; g.textAlign='center'; g.textBaseline='alphabetic';
+  g.fillText(text, W/2, baseline);
+  const img=g.getImageData(0,0,W,H).data;
+  const bin=new Uint8Array(W*H);
+  for(let i=0;i<bin.length;i++) bin[i]=img[i*4+3]>100?1:0;
+  thinMask(bin,W,H);
+  const pts=[];
+  for(let y=0;y<H;y++) for(let x=0;x<W;x++) if(bin[y*W+x]) pts.push({x,y});
+  const spacing=Math.max(5.5,S*0.052), r=Math.max(1.25,S*0.0095);
+  const grid=new Map(), dots=[];
+  for(const p of pts){
+    const gx=Math.floor(p.x/spacing), gy=Math.floor(p.y/spacing);
+    let ok=true;
+    for(let dx=-1;dx<=1&&ok;dx++) for(let dy=-1;dy<=1&&ok;dy++){
+      const arr=grid.get((gx+dx)+','+(gy+dy));
+      if(arr) for(const q of arr){ if((q.x-p.x)*(q.x-p.x)+(q.y-p.y)*(q.y-p.y) < spacing*spacing*0.7){ ok=false; break; } }
+    }
+    if(!ok) continue;
+    const k=gx+','+gy; if(!grid.has(k)) grid.set(k,[]);
+    grid.get(k).push(p); dots.push(p);
+  }
+  const out=document.createElement('canvas'); out.width=W; out.height=H;
+  const o=out.getContext('2d'); o.fillStyle='#4a4a4a';
+  for(const p of dots){ o.beginPath(); o.arc(p.x,p.y,r,0,Math.PI*2); o.fill(); }
+  const sp={canvas:out,w:W,h:H,baseline,S};
+  if(TRACE_CACHE.size>=12) TRACE_CACHE.delete(TRACE_CACHE.keys().next().value);
+  TRACE_CACHE.set(text,sp);
+  return sp;
 }
 function redrawWcv(){
   if(!WCV) return;
@@ -925,27 +999,22 @@ function redrawWcv(){
   ctx.clearRect(0,0,w,h);
   const glyph=L.letter==='ه'?'هـ':L.letter;
   const forms=L.forms||[ L.connects?L.letter+'ـ':L.letter, 'ـ'+L.letter+(L.connects?'ـ':''), 'ـ'+L.letter ];
-  const rows=[
-    {y:h*0.30, items:[glyph, ...forms], maxS:w*0.12},
-    {y:h*0.74, items:[plain(L.words[0].w)], maxS:w*0.10}
-  ];
-  rows.forEach(r=>{
-    const size=Math.min((w/Math.max(r.items.length,1))*0.5, h*0.28, r.maxS);
-    /* خطوط الدفتر المنقطة */
-    ctx.save();
-    ctx.lineWidth=2; ctx.strokeStyle='#f0e4c9';
-    [[-0.58],[0.26]].forEach(k=>{ ctx.beginPath(); ctx.moveTo(w*0.03, r.y+size*k[0]); ctx.lineTo(w*0.97, r.y+size*k[0]); ctx.stroke(); });
-    ctx.setLineDash([9,9]); ctx.strokeStyle='#e8d7ae';
-    ctx.beginPath(); ctx.moveTo(w*0.03, r.y-size*0.18); ctx.lineTo(w*0.97, r.y-size*0.18); ctx.stroke();
-    ctx.restore();
-    /* الحروف المنقطة للتتبع */
-    ctx.save();
-    ctx.setLineDash([2,6]); ctx.lineWidth=1.4; ctx.strokeStyle='#bfa87f';
-    ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.font='700 '+Math.round(size)+'px "Baloo Bhaijaan 2","Segoe UI",sans-serif';
-    const n=r.items.length, gap=w/n;
-    r.items.forEach((t,i)=>ctx.strokeText(t, gap*(i+0.5), r.y+size*0.05));
-    ctx.restore();
+  const items=[...new Set([glyph, ...forms])];
+  const n=items.length, cell=w/n;
+  const size=Math.min(cell*0.66, h*0.62, 170);
+  const baseY=h*0.50;
+  const baseline=baseY+size*0.30;
+  /* خط كتابة واحد فقط (وليس خطين) */
+  ctx.save();
+  ctx.lineWidth=1.3; ctx.strokeStyle='#f1e8d6';
+  ctx.beginPath(); ctx.moveTo(w*0.03, baseline); ctx.lineTo(w*0.97, baseline); ctx.stroke();
+  ctx.restore();
+  /* الحرف بخط واحد: نقاط على هيكل الحرف */
+  items.forEach((t,i)=>{
+    const sp=traceSprite(t);
+    const scale=size/sp.S;
+    const x=cell*(i+0.5);
+    ctx.drawImage(sp.canvas, x-sp.w*scale/2, baseline-sp.baseline*scale, sp.w*scale, sp.h*scale);
   });
   /* حبر الطالب */
   const all=WCV.drawing?[...WCV.strokes,WCV.drawing]:WCV.strokes;
@@ -958,6 +1027,21 @@ function redrawWcv(){
   });
   ctx.restore();
 }
+/* إعادة ضبط حجم اللوح عند تدوير الجوال أو تغيير حجم النافذة */
+function fitWriteCanvas(){
+  if(!WCV || !document.body.contains(WCV.cv)) return;
+  const cv=WCV.cv, dpr=Math.min(2, window.devicePixelRatio||1);
+  const w=cv.clientWidth||600, h=cv.clientHeight||300;
+  if(Math.abs(w-WCV.w)<2 && Math.abs(h-WCV.h)<2) return;
+  const sx=w/WCV.w, sy=h/WCV.h;
+  cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
+  WCV.ctx.setTransform(dpr,0,0,dpr,0,0);
+  WCV.strokes.forEach(s=>s.pts.forEach(p=>{ p.x*=sx; p.y*=sy; }));
+  if(WCV.drawing) WCV.drawing.pts.forEach(p=>{ p.x*=sx; p.y*=sy; });
+  WCV.w=w; WCV.h=h;
+  redrawWcv();
+}
+window.addEventListener('resize', ()=>{ clearTimeout(fitWriteCanvas._t); fitWriteCanvas._t=setTimeout(fitWriteCanvas,200); });
 function setPen(btn,c){ if(!WCV) return; WCV.color=c; document.querySelectorAll('.penDot:not(.thick)').forEach(b=>b.classList.remove('sel')); if(btn) btn.classList.add('sel'); }
 function setPenW(btn,wpx){ if(!WCV) return; WCV.width=wpx; document.querySelectorAll('.penDot.thick').forEach(b=>b.classList.remove('sel')); if(btn) btn.classList.add('sel'); }
 function wcvUndo(){ if(WCV){ WCV.strokes.pop(); redrawWcv(); } }
