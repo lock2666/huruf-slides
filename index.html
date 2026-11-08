@@ -685,8 +685,8 @@ const SOUND = { on:true, voice:null };
 const VOICE = { lastEngine:null, error:null, cache:new Map(), audio:null, cloudDown:false };
 let VOICE_SEQ = 0;
 
-/* إعدادات الصوت البشري — الافتراضي: ElevenLabs بصوت Alice (معلمة واضحة) */
-const DEF_VOICESET = { provider:'eleven', key:'sk_1db3740abc0a373d10a0e2c0a5144989c9d34d52f815be16', region:'', voice:'Xb7hH8MSUJpSbSDYk0k2' };
+/* إعدادات الصوت البشري — الافتراضي: ElevenLabs بصوت Callum (مُسَجَّل مسبقًا محليًا) */
+const DEF_VOICESET = { provider:'eleven', key:'sk_1db3740abc0a373d10a0e2c0a5144989c9d34d52f815be16', region:'', voice:'JBFqnCBsd6RMkjVDRZzb' };
 const VSET = { ...DEF_VOICESET };
 try{ Object.assign(VSET, JSON.parse(localStorage.getItem('hurufVoiceSet2')||'{}')); }catch(e){}
 function saveVSet(){ try{ localStorage.setItem('hurufVoiceSet2', JSON.stringify(VSET)); }catch(e){} }
@@ -815,13 +815,17 @@ function deviceSpeak(t, opts={}, cb){
   }catch(e){ return null; }
 }
 
-/* الدالة الموحدة: بشري أولًا ثم صوت الجهاز */
-function speakText(text, opts, onEnd){
-  if(!SOUND.on){ setTimeout(()=>onEnd&&onEnd(), (opts&&opts.silentMs)||2200); return; }
-  const t = cleanForSpeech(text);
-  if(!t){ onEnd&&onEnd(); return; }
-  const seq = ++VOICE_SEQ;
-  if(VOICE.audio){ try{ VOICE.audio.pause(); }catch(e){} }
+/* الدالة الموحدة: الصوت المسجّل محليًا أولًا (دون API) ثم السحابي ثم صوت الجهاز */
+function vKey(t){ let h=5381; for(let i=0;i<t.length;i++){ h=((h<<5)+h+t.charCodeAt(i))|0; } return (h>>>0).toString(36); }
+const LOCAL_AUDIO = { ready:false, keys:new Set() };
+(async()=>{ /* تحميل بيان الأصوات المسجلة */
+  try{
+    const r=await fetch('audio/manifest.json');
+    if(r.ok){ const j=await r.json(); LOCAL_AUDIO.keys=new Set(j.keys||[]); LOCAL_AUDIO.ready=true; }
+  }catch(e){}
+})();
+
+function cloudThenDevice(t, seq, opts, onEnd){
   humanSpeak(t, seq).then(ok=>{
     if(seq!==VOICE_SEQ) return;
     if(ok){ updateVoiceNote(); onEnd&&onEnd(); return; }
@@ -829,6 +833,24 @@ function speakText(text, opts, onEnd){
     updateVoiceNote();
     if(!u) onEnd&&onEnd();
   });
+}
+function speakText(text, opts, onEnd){
+  if(!SOUND.on){ setTimeout(()=>onEnd&&onEnd(), (opts&&opts.silentMs)||2200); return; }
+  const t = cleanForSpeech(text);
+  if(!t){ onEnd&&onEnd(); return; }
+  const seq = ++VOICE_SEQ;
+  if(VOICE.audio){ try{ VOICE.audio.pause(); }catch(e){} }
+  /* أولًا: الأصوات البشرية المسجلة مسبقًا — تعمل دون إنترنت ودون API */
+  const k = vKey(t);
+  if(LOCAL_AUDIO.keys.has(k)){
+    playAudio('audio/'+k+'.mp3').then(ended=>{
+      if(seq!==VOICE_SEQ) return;
+      if(ended){ VOICE.lastEngine='بَشَرِيٌّ مُسَجَّلٌ مُسْبَقًا'; VOICE.error=null; updateVoiceNote(); onEnd&&onEnd(); }
+      else cloudThenDevice(t, seq, opts, onEnd);
+    });
+    return;
+  }
+  cloudThenDevice(t, seq, opts, onEnd);
 }
 /* التهجئة: نطق الكلمة حرفًا حرفًا ثم قراءتها كاملة */
 let SPELL_CHAIN = 0;
@@ -840,14 +862,41 @@ function speakSeq(items, opts){
   };
   step(0);
 }
-function spellWord(word){
-  const units = word.match(/[\u0621-\u064A][\u064B-\u0652\u0670\u0653-\u0655]*/g) || [word];
-  speakSeq([...units, word], {rate:0.8});
+/* المدّ الصحيح للحركات: الفتحة بالألف والضمة بالواو والكسرة بالياء — كما في المنهج */
+function elongate(u){
+  if(!u) return u;
+  const base=u[0];
+  if(base==='أ'||base==='ا'||base==='إ'||base==='آ'){
+    if(/[\u064E]$/.test(u)) return 'آ';
+    if(/[\u064F]$/.test(u)) return 'أُو';
+    if(/[\u0650]$/.test(u)) return 'إِي';
+    return u;
+  }
+  if(/[\u064E]$/.test(u)) return u+'ا';
+  if(/[\u064F]$/.test(u)) return u+'و';
+  if(/[\u0650]$/.test(u)) return u+'ي';
+  return u;
 }
+
+/* التهجئة: نُطْقُ الكَلِمَةِ مَقْطَعًا مَقْطَعًا (الساكن والمشدد يلتصق بما قبله) ثُمَّ قِرَاءَتُهَا */
+function spellChunks(word){
+  const units = word.match(/[\u0621-\u064A][\u064B-\u0652\u0670\u0653-\u0655]*/g) || [word];
+  const chunks=[];
+  units.forEach(u=>{
+    const closes = /[\u0651\u0652]/.test(u) || !/[\u064B-\u0652]/.test(u);
+    if(closes && chunks.length) chunks[chunks.length-1]+=u;
+    else chunks.push(u);
+  });
+  return chunks.map(c=>{
+    const bases=[...c].filter(ch=>ch>='\u0621'&&ch<='\u064A');
+    return (bases.length===1 && !/[\u0651\u0652]/.test(c)) ? elongate(c) : c;
+  });
+}
+function spellWord(word){ speakSeq([...spellChunks(word), word], {rate:0.8}); }
 function speak(text, opts={}){ speakText(text, opts, null); }
 function harClick(el,s,w){
   el.querySelector('.sym').animate([{transform:'scale(1)'},{transform:'scale(1.25)'},{transform:'scale(1)'}],{duration:450});
-  speakText(s+'، '+w, {}, null);
+  speakText(elongate(s)+'، '+w, {}, null);
 }
 function wcardClick(el,word){
   el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
@@ -1352,6 +1401,7 @@ function updateVoiceNote(){
     return;
   }
   if(VSET.key && VSET.provider!=='none'){ set('#eef4ff','#1e88e5','#1653a0','🎙️ صَوْتٌ بَشَرِيٌّ جَاهِزٌ ('+(VSET.provider==='eleven'?'ElevenLabs':VSET.provider==='azure'?'Azure':'Google')+') — اِضْغَطْ «تَرْدِيدًا جَمَاعِيًّا» لِلْبَدْءِ'); return; }
+  if(LOCAL_AUDIO.ready){ set('#e8f7ee','#2e9e5b','#1d6e3c','🎙️ صَوْتٌ بَشَرِيٌّ مُسَجَّلٌ ('+toAr(LOCAL_AUDIO.keys.size)+' مَقْطَعًا) — يَعْمَلُ دُونَ إِنْتَرْنِتٍ'); return; }
   const vs=('speechSynthesis' in window)?speechSynthesis.getVoices():[];
   const natural=vs.find(v=>/^ar/i.test(v.lang)&&/online|natural/i.test(v.name));
   if(natural){ set('#e8f7ee','#2e9e5b','#1d6e3c','🎙️ صَوْتٌ بَشَرِيٌّ طَبِيعِيٌّ جَاهِزٌ (Edge)'); return; }
