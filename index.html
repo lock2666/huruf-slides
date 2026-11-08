@@ -266,6 +266,20 @@
   .vsHint{background:#eef4ff;border:2px dashed #1e88e5;border-radius:14px;padding:8px 14px;font-size:clamp(11px,1.7vw,15px);font-weight:700;color:#1653a0;margin-top:10px;line-height:1.9;}
   .vsStatus{min-height:1.5em;text-align:center;font-weight:800;font-size:clamp(13px,2vw,18px);margin-top:8px;}
 
+  /* ===== نافذة السرعة ===== */
+  #speedPop{position:fixed;inset:0;background:#3b2c2055;backdrop-filter:blur(4px);z-index:58;display:none;align-items:center;justify-content:center;padding:14px;}
+  #speedPop.open{display:flex;animation:rise .3s ease both;}
+  .spdVal{text-align:center;font-size:clamp(34px,6vw,56px);font-weight:800;color:#2e9e5b;line-height:1.3;margin:6px 0;}
+  .spRange{display:flex;align-items:center;gap:12px;margin:4px 0 10px;}
+  .spRange input[type=range]{flex:1;accent-color:#2e9e5b;height:30px;cursor:pointer;}
+  .spPresets{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+  .spBtn{font-family:inherit;font-weight:800;font-size:clamp(13px,2vw,17px);border:3px solid #cfe8da;background:#fff;color:#1d6e3c;border-radius:999px;padding:6px 18px;cursor:pointer;transition:all .15s;}
+  .spBtn:hover{transform:translateY(-2px);}
+  .spBtn.on{background:#2e9e5b;border-color:#2e9e5b;color:#fff;box-shadow:0 4px 0 #1d6e3c;}
+  .spSpell{display:flex;gap:10px;align-items:center;justify-content:center;font-weight:800;font-size:clamp(13px,2vw,17px);margin:14px 0 6px;cursor:pointer;flex-wrap:wrap;text-align:center;}
+  .spSpell input{width:22px;height:22px;accent-color:#2e9e5b;cursor:pointer;}
+  .spHint{background:#e8f7ee;border:2px dashed #2e9e5b;border-radius:14px;padding:6px 12px;font-size:clamp(11px,1.6vw,14px);font-weight:700;color:#1d6e3c;text-align:center;}
+
   /* ===== نافذة الأناشيد ===== */
   #songs{position:fixed;inset:0;background:#fffcf4f5;backdrop-filter:blur(8px);z-index:50;display:none;flex-direction:column;padding:14px clamp(10px,3vw,40px) 10px;overflow:hidden;}
   #songs.open{display:flex;animation:rise .35s ease both;}
@@ -318,6 +332,7 @@
     <div class="chip" id="secChip">رِحْلَةُ الحُرُوفِ</div>
     <div class="progWrap"><div id="progBar"></div></div>
     <div id="counter">١ / ١</div>
+    <button class="iconBtn" id="btnSpeed" title="سرعة النطق والتهجئة">🎚️</button>
     <button class="iconBtn" id="btnVoiceSet" title="إعدادات الصوت البشري">🎙️</button>
     <button class="iconBtn" id="btnSound" title="تشغيل/إيقاف الصوت">🔊</button>
     <button class="iconBtn" id="btnSongs" title="نافذة الأناشيد">🎵 الأَنَاشِيد</button>
@@ -342,6 +357,24 @@
   <div class="tiles" id="menuTiles"></div>
 </div>
 
+<div id="speedPop">
+  <div class="vsCard" style="border-color:#2e9e5b;max-width:480px">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+      <h2 style="margin:0;font-size:clamp(17px,3vw,26px)">🎚️ سُرْعَةُ النُّطْقِ وَالتَّهْجِئَةِ</h2>
+      <button class="closeBtn" id="btnCloseSpeed">إِغْلَاق ✕</button>
+    </div>
+    <div id="spdVal" class="spdVal">٠٫٩×</div>
+    <div class="spRange"><span class="emoji" style="font-size:26px">🐢</span><input type="range" id="spdRange" min="0.6" max="1.4" step="0.05"><span class="emoji" style="font-size:26px">🐇</span></div>
+    <div class="spPresets">
+      <button class="spBtn" data-r="0.7">بَطِيءٌ 🐢</button>
+      <button class="spBtn" data-r="0.9">مُعْتَدِلٌ ✓</button>
+      <button class="spBtn" data-r="1.15">سَرِيعٌ 🐇</button>
+    </div>
+    <label class="spSpell"><input type="checkbox" id="spdSpell"> 🔤 وَضْعُ التَّهْجِئَةِ: نُطْقُ الكَلِمَةِ حَرْفًا حَرْفًا ثُمَّ قِرَاءَتُهَا كَامِلَةً</label>
+    <div class="spHint">✨ يُطَبَّقُ فَوْرِيًّا عَلَى كُلِّ الأَصْوَاتِ: الكَلِمَاتِ وَالحُرُوفِ وَالحَرَكَاتِ وَالأَنَاشِيدِ</div>
+  </div>
+</div>
+
 <div id="voiceSet">
   <div class="vsCard">
     <div class="head" style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
@@ -360,9 +393,12 @@
     <input id="vsKey" type="password" class="vsInput" placeholder="أَلْصِقِ المَفْتَاحَ هُنَا…" autocomplete="off">
     <label class="vsLabel" id="vsRegionLabel">المنطقة (Azure Region — مثال: westeurope أو uksouth)</label>
     <input id="vsRegion" class="vsInput" placeholder="westeurope" autocomplete="off">
-    <label class="vsLabel">اسْمُ الصَّوْتِ (اخْتِيَارِيٌّ — اُتْرُكْهُ فَارِغًا لِلافْتِرَاضِيِّ)</label>
-    <input id="vsVoice" class="vsInput" placeholder="ElevenLabs: مُعَرِّفُ الصَّوْتِ • Azure: ar-SA-HamedNeural • Google: ar-XA-Neural2-C" autocomplete="off">
+    <label class="vsLabel" id="vsVoiceLabel" style="display:none">اسْمُ الصَّوْتِ (Azure: ar-SA-HamedNeural • Google: ar-XA-Neural2-C)</label>
+    <input id="vsVoice" class="vsInput" style="display:none" placeholder="ar-SA-HamedNeural" autocomplete="off">
+    <label class="vsLabel" id="vsVoiceListLabel">اَلصَّوْتُ (مِنْ حِسَابِكَ فِي ElevenLabs)</label>
+    <select id="vsVoiceList" class="vsInput"></select>
     <div class="vsHint" id="vsHint"></div>
+    <div id="vsQuota" class="vsHint" style="border-color:#2e9e5b;color:#1d6e3c;background:#e8f7ee;display:none"></div>
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px">
       <button class="iconBtn" style="background:#2e9e5b" id="vsTest">🔊 تَجْرِبَةُ الصَّوْتِ</button>
       <button class="iconBtn" id="vsSave">💾 حِفَظُ الإِعْدَادَاتِ</button>
@@ -385,6 +421,7 @@
       <div class="songCard" id="songCard"></div>
       <div class="songTools">
         <button class="iconBtn" id="btnKaroake" style="background:#2e9e5b">🔊 تَرْدِيدٌ جَمَاعِيٌّ</button>
+        <button class="iconBtn" style="background:#1e88e5" onclick="toggleSpeedPop(true)">🎚️ السُّرْعَةُ</button>
         <button class="iconBtn" id="btnEditSong" style="background:#b8860b">✏️ تَعْدِيلُ النَّصِّ</button>
         <button class="iconBtn" id="btnResetSong" style="background:#8d7460">↺ اسْتِرْجَاعُ الأَصْلِ</button>
       </div>
@@ -648,10 +685,17 @@ const SOUND = { on:true, voice:null };
 const VOICE = { lastEngine:null, error:null, cache:new Map(), audio:null, cloudDown:false };
 let VOICE_SEQ = 0;
 
-/* إعدادات الصوت البشري (تُحفظ في المتصفح) */
-const VSET = { provider:'none', key:'', region:'', voice:'' };
-try{ Object.assign(VSET, JSON.parse(localStorage.getItem('hurufVoiceSet')||'{}')); }catch(e){}
-function saveVSet(){ try{ localStorage.setItem('hurufVoiceSet', JSON.stringify(VSET)); }catch(e){} }
+/* إعدادات الصوت البشري — الافتراضي: ElevenLabs بصوت Alice (معلمة واضحة) */
+const DEF_VOICESET = { provider:'eleven', key:'sk_1db3740abc0a373d10a0e2c0a5144989c9d34d52f815be16', region:'', voice:'Xb7hH8MSUJpSbSDYk0k2' };
+const VSET = { ...DEF_VOICESET };
+try{ Object.assign(VSET, JSON.parse(localStorage.getItem('hurufVoiceSet2')||'{}')); }catch(e){}
+function saveVSet(){ try{ localStorage.setItem('hurufVoiceSet2', JSON.stringify(VSET)); }catch(e){} }
+
+/* سرعة النطق والتهجئة (يتحكم بها المعلم) */
+const SPD = { rate:0.9, spell:false };
+try{ Object.assign(SPD, JSON.parse(localStorage.getItem('hurufSpeed')||'{}')); }catch(e){}
+function saveSpd(){ try{ localStorage.setItem('hurufSpeed', JSON.stringify(SPD)); }catch(e){} }
+function spdLabel(r){ return (Math.round(r*100)/100).toString().replace('.','٫').replace(/\d/g,d=>AR[d]); }
 
 function pickVoice(){
   if(!('speechSynthesis' in window)) return;
@@ -668,11 +712,13 @@ function cleanForSpeech(t){
   return t.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}\u{20E3}\u{200D}\u{2726}-\u{2727}]/gu,'').replace(/\*/g,'').replace(/\s+/g,' ').trim();
 }
 
-/* تشغيل ملف صوتي مع إخبارنا عند انتهائه */
+/* تشغيل ملف صوتي مع إخبارنا عند انتهائه — مع تطبيق سرعة المعلم */
 function playAudio(url){
   return new Promise(res=>{
     try{
       const a = new Audio(url); VOICE.audio = a;
+      a.playbackRate = SPD.rate;
+      try{ a.preservesPitch = true; a.webkitPreservesPitch = true; }catch(e){}
       let done=false; const fin=v=>{ if(!done){ done=true; res(v); } };
       a.onended=()=>fin(true); a.onerror=()=>fin(false);
       a.play().catch(()=>fin(false));
@@ -701,7 +747,7 @@ async function humanSpeak(t, seq){
   try{
     /* ١) ElevenLabs — أوضح صوت بشري */
     if(VSET.provider==='eleven'){
-      const vid = VSET.voice || 'EXAVITQu4vr4xnSDxMaL';
+      const vid = VSET.voice || DEF_VOICESET.voice;
       const r = await fetch('https://api.elevenlabs.io/v1/text-to-speech/'+vid, {
         method:'POST',
         headers:{ 'xi-api-key':VSET.key, 'Content-Type':'application/json', 'Accept':'audio/mpeg' },
@@ -759,7 +805,7 @@ function deviceSpeak(t, opts={}, cb){
     const u = new SpeechSynthesisUtterance(t);
     u.lang = SOUND.voice ? SOUND.voice.lang : 'ar-SA';
     if(SOUND.voice) u.voice = SOUND.voice;
-    u.rate = opts.rate ?? 0.85; u.pitch = opts.pitch ?? 1;
+    u.rate = Math.min(1.5, Math.max(0.5, (opts.rate ?? 0.85) * SPD.rate)); u.pitch = opts.pitch ?? 1;
     if(cb){ u.onend = cb; u.onerror = cb; }
     if(SOUND.voice && /online|natural/i.test(SOUND.voice.name))
       VOICE.lastEngine = 'بَشَرِيٌّ طَبِيعِيٌّ (Edge: '+SOUND.voice.name.split('(')[0].trim()+')';
@@ -784,6 +830,20 @@ function speakText(text, opts, onEnd){
     if(!u) onEnd&&onEnd();
   });
 }
+/* التهجئة: نطق الكلمة حرفًا حرفًا ثم قراءتها كاملة */
+let SPELL_CHAIN = 0;
+function speakSeq(items, opts){
+  const id = ++SPELL_CHAIN;
+  const step = (k)=>{
+    if(k>=items.length || id!==SPELL_CHAIN) return;
+    speakText(items[k], opts, ()=>setTimeout(()=>step(k+1), 300));
+  };
+  step(0);
+}
+function spellWord(word){
+  const units = word.match(/[\u0621-\u064A][\u064B-\u0652\u0670\u0653-\u0655]*/g) || [word];
+  speakSeq([...units, word], {rate:0.8});
+}
 function speak(text, opts={}){ speakText(text, opts, null); }
 function harClick(el,s,w){
   el.querySelector('.sym').animate([{transform:'scale(1)'},{transform:'scale(1.25)'},{transform:'scale(1)'}],{duration:450});
@@ -791,10 +851,10 @@ function harClick(el,s,w){
 }
 function wcardClick(el,word){
   el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
-  speakText(word, {}, null);
+  if(SPD.spell){ spellWord(word); } else { speakText(word, {}, null); }
 }
 function stopVoice(){
-  VOICE_SEQ++;
+  VOICE_SEQ++; SPELL_CHAIN++;
   if(VOICE.audio){ try{ VOICE.audio.pause(); }catch(e){} }
   try{ speechSynthesis.cancel(); }catch(e){}
 }
@@ -1200,6 +1260,7 @@ $('#btnFs').onclick=()=>{
   else document.exitFullscreen?.();
 };
 document.addEventListener('keydown',e=>{
+  if($('#speedPop').classList.contains('open')){ if(e.key==='Escape') toggleSpeedPop(false); return; }
   if($('#voiceSet').classList.contains('open')){ if(e.key==='Escape') closeVoiceSet(); return; }
   if($('#songs').classList.contains('open')){ if(e.key==='Escape') closeSongs(); return; }
   if($('#menu').classList.contains('open')){ if(e.key==='Escape') closeMenu(); return; }
@@ -1290,12 +1351,31 @@ function updateVoiceNote(){
       (human?'🎙️ الصَّوْتُ الحَالِيُّ: ':'🔊 الصَّوْتُ الحَالِيُّ: ')+VOICE.lastEngine+(VOICE.error?(' — ⚠️ '+VOICE.error):''));
     return;
   }
-  if(VSET.key && VSET.provider!=='none'){ set('#eef4ff','#1e88e5','#1653a0','🎙️ صَوْتٌ بَشَرِيٌّ جَاهِزٌ — اِضْغَطْ «تَرْدِيدًا جَمَاعِيًّا» لِلْبَدْءِ'); return; }
+  if(VSET.key && VSET.provider!=='none'){ set('#eef4ff','#1e88e5','#1653a0','🎙️ صَوْتٌ بَشَرِيٌّ جَاهِزٌ ('+(VSET.provider==='eleven'?'ElevenLabs':VSET.provider==='azure'?'Azure':'Google')+') — اِضْغَطْ «تَرْدِيدًا جَمَاعِيًّا» لِلْبَدْءِ'); return; }
   const vs=('speechSynthesis' in window)?speechSynthesis.getVoices():[];
   const natural=vs.find(v=>/^ar/i.test(v.lang)&&/online|natural/i.test(v.name));
   if(natural){ set('#e8f7ee','#2e9e5b','#1d6e3c','🎙️ صَوْتٌ بَشَرِيٌّ طَبِيعِيٌّ جَاهِزٌ (Edge)'); return; }
   set('#fff3d6','#e8b94a','#8a6100','🎙️ لِصَوْتٍ بَشَرِيٍّ: اِفْتَحِ المَوْقِعَ بِمُتَصَفِّحِ Edge أَوْ أَدْخِلْ مَفْتَاحًا مَجَّانِيًّا مِنْ زِرِّ الإِعْدَادَاتِ 🎙️');
 }
+
+/* ---------- التحكم بالسرعة والتهجئة ---------- */
+function updateSpdUI(){
+  $('#spdRange').value=SPD.rate;
+  $('#spdVal').textContent=spdLabel(SPD.rate)+'×';
+  $('#spdSpell').checked=SPD.spell;
+  document.querySelectorAll('.spBtn').forEach(b=>b.classList.toggle('on', Math.abs(+b.dataset.r-SPD.rate)<0.001));
+}
+function toggleSpeedPop(force){
+  const p=$('#speedPop');
+  const open = force!==undefined ? force : !p.classList.contains('open');
+  p.classList.toggle('open', open);
+  if(open) updateSpdUI();
+}
+$('#btnSpeed').onclick=()=>toggleSpeedPop();
+$('#btnCloseSpeed').onclick=()=>toggleSpeedPop(false);
+$('#spdRange').oninput=e=>{ SPD.rate=+e.target.value; saveSpd(); updateSpdUI(); };
+document.querySelectorAll('.spBtn').forEach(b=>b.onclick=()=>{ SPD.rate=+b.dataset.r; saveSpd(); updateSpdUI(); });
+$('#spdSpell').onchange=e=>{ SPD.spell=e.target.checked; saveSpd(); };
 
 /* ---------- لوحة إعدادات الصوت ---------- */
 const VS_HINTS={
@@ -1304,15 +1384,56 @@ const VS_HINTS={
   azure:'١) أَنْشِئْ حِسَابًا فِي portal.azure.com ٢) أَنْشِئْ مَوْرَدَ Create a resource ← Speech (الخُطَّةُ المَجَّانِيَّةُ F0) ٣) انْسَخْ KEY 1 والمنطقة Region. الصَّوْتُ الافْتِرَاضِيُّ: ar-SA-HamedNeural (صَوْتٌ سُعُودِيٌّ) — ٥٠٠ أَلْفِ حَرْفٍ مَجَّانًا شَهْرِيًّا.',
   google:'١) مِنْ console.cloud.google.com فَعِّلْ Text-to-Speech API ٢) أَنْشِئْ API Key. الصَّوْتُ الافْتِرَاضِيُّ: ar-XA-Neural2-C — مَجَّانًا حَتَّى مِلْيُونِ حَرْفٍ شَهْرِيًّا.'
 };
+async function fillVoiceList(){
+  const sel=$('#vsVoiceList'); if(!sel) return;
+  const key=$('#vsKey').value.trim();
+  sel.innerHTML='<option>…جَارٍ التَّحْمِيلُ</option>';
+  try{
+    const r=await fetch('https://api.elevenlabs.io/v1/voices',{headers:{'xi-api-key':key}});
+    if(!r.ok) throw new Error(r.status);
+    const j=await r.json();
+    const cur=VSET.voice||DEF_VOICESET.voice;
+    sel.innerHTML=j.voices.map(v=>`<option value="${v.voice_id}"${v.voice_id===cur?' selected':''}>${v.name}${v.labels&&v.labels.descriptive?' — '+v.labels.descriptive:''}</option>`).join('');
+  }catch(e){
+    sel.innerHTML=`<option value="Xb7hH8MSUJpSbSDYk0k2">Alice — Clear Educator (افتراضي)</option>
+      <option value="EXAVITQu4vr4xnSDxMaL">Sarah — Professional</option>
+      <option value="onwK4e9ZLuTAKqWW03F9">Daniel — Formal Broadcaster</option>
+      <option value="pNInz6obpgDQGcFmaJgB">Adam — Firm</option>`;
+  }
+}
+async function updateQuota(){
+  const el=$('#vsQuota'); if(!el) return;
+  const key=$('#vsKey').value.trim();
+  if($('#vsProvider').value!=='eleven' || !key){ el.style.display='none'; return; }
+  el.style.display='';
+  el.textContent='…جَارِي جَلْبُ الحُصَّةِ';
+  try{
+    const r=await fetch('https://api.elevenlabs.io/v1/user/subscription',{headers:{'xi-api-key':key}});
+    if(!r.ok) throw new Error(r.status);
+    const j=await r.json();
+    const left=Math.max(0, j.character_limit-j.character_count);
+    el.textContent='📊 الحُصَّةُ الشَّهْرِيَّةُ: تَبَقَّى '+toAr(left)+' مِنْ '+toAr(j.character_limit)+' حَرْفٍ' + (left<1000?' — ⚠️ اَلْحُصَّةُ تَنْفَدُ قَرِيبًا':'');
+  }catch(e){ el.textContent=''; el.style.display='none'; }
+}
+function applyVoiceForm(){
+  const p=$('#vsProvider').value;
+  const isEl = p==='eleven';
+  $('#vsVoiceListLabel').style.display = isEl?'':'none';
+  $('#vsVoiceList').style.display = isEl?'':'none';
+  $('#vsVoiceLabel').style.display = isEl?'none':'';
+  $('#vsVoice').style.display = isEl?'none':'';
+  $('#vsRegion').style.display = p==='azure'?'':'none';
+  $('#vsRegionLabel').style.display = p==='azure'?'':'none';
+}
 function openVoiceSet(){
   $('#vsProvider').value=VSET.provider;
   $('#vsKey').value=VSET.key;
   $('#vsRegion').value=VSET.region;
   $('#vsVoice').value=VSET.voice;
   $('#vsHint').textContent=VS_HINTS[VSET.provider]||'';
-  $('#vsRegion').style.display = VSET.provider==='azure' ? '' : 'none';
-  $('#vsRegionLabel').style.display = VSET.provider==='azure' ? '' : 'none';
   $('#vsStatus').textContent='';
+  applyVoiceForm();
+  if(VSET.provider==='eleven') { fillVoiceList(); updateQuota(); }
   $('#voiceSet').classList.add('open');
 }
 function closeVoiceSet(){ $('#voiceSet').classList.remove('open'); }
@@ -1321,28 +1442,36 @@ $('#btnCloseVoiceSet').onclick=closeVoiceSet;
 $('#vsProvider').onchange=()=>{
   const p=$('#vsProvider').value;
   $('#vsHint').textContent=VS_HINTS[p]||'';
-  $('#vsRegion').style.display = p==='azure' ? '' : 'none';
-  $('#vsRegionLabel').style.display = p==='azure' ? '' : 'none';
+  applyVoiceForm();
+  if(p==='eleven') { fillVoiceList(); updateQuota(); }
 };
 $('#vsSave').onclick=()=>{
   VSET.provider=$('#vsProvider').value;
   VSET.key=$('#vsKey').value.trim();
   VSET.region=$('#vsRegion').value.trim();
-  VSET.voice=$('#vsVoice').value.trim();
+  VSET.voice = VSET.provider==='eleven' ? ($('#vsVoiceList').value||DEF_VOICESET.voice) : $('#vsVoice').value.trim();
   saveVSet();
   VOICE.lastEngine=null; VOICE.cloudDown=false;
   const st=$('#vsStatus');
   st.style.color='#2e9e5b';
   st.textContent='✅ تَمَّ الحِفْظُ';
+  updateQuota();
   updateVoiceNote();
 };
 $('#vsTest').onclick=()=>{
+  /* طبِّق قيم النموذج الحالية (دون حفظ دائم) ثم نطق جملة تجريبية */
+  VSET.provider=$('#vsProvider').value;
+  VSET.key=$('#vsKey').value.trim();
+  VSET.region=$('#vsRegion').value.trim();
+  VSET.voice = VSET.provider==='eleven' ? ($('#vsVoiceList').value||DEF_VOICESET.voice) : $('#vsVoice').value.trim();
+  VOICE.cloudDown=false;
   const st=$('#vsStatus');
   st.style.color='#1e88e5';
   st.textContent='⏳ جَارِي التَّجْرِبَةُ…';
   speakText('مَرْحَبًا بِكُمْ يَا أَبْطَالُ الصَّفِّ الأَوَّلِ فِي رِحْلَةِ الحُرُوفِ', {}, ()=>{
     st.style.color = VOICE.lastEngine && VOICE.lastEngine.includes('بَشَرِي') ? '#2e9e5b' : '#b8860b';
     st.textContent = '🎙️ النَّتِيجَةُ: '+(VOICE.lastEngine||'لَمْ يُعْمَلْ الصَّوْتُ')+(VOICE.error?(' — '+VOICE.error):'');
+    updateQuota();
   });
 };
 function openSongById(id){ const i=SONGS.findIndex(s=>s.id===id); if(i>=0){ curSong=i; openSongs(); } }
@@ -1375,7 +1504,7 @@ function playLine(){
   if(!$('#songs').classList.contains('open')) return stopKaroake();
   karoLines.forEach((l,i)=>l.classList.toggle('active', i===karoIdx));
   const txt = cleanForSpeech(karoLines[karoIdx].textContent);
-  speakText(txt, {rate:0.85, silentMs:2400}, ()=>{
+  speakText(txt, {rate:0.85, silentMs:Math.round(2400/SPD.rate)}, ()=>{
     if(!singing) return;
     karoIdx = (karoIdx+1)%karoLines.length;
     songTimer = setTimeout(playLine, 500);
