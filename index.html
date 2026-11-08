@@ -256,6 +256,16 @@
 
   .voiceChip{background:#e8f7ee;border:2px solid #2e9e5b;color:#1d6e3c;border-radius:999px;padding:4px 14px;font-weight:800;font-size:clamp(11px,1.7vw,15px);}
 
+  /* ===== إعدادات الصوت ===== */
+  #voiceSet{position:fixed;inset:0;background:#3b2c2055;backdrop-filter:blur(4px);z-index:60;display:none;align-items:center;justify-content:center;padding:14px;}
+  #voiceSet.open{display:flex;animation:rise .3s ease both;}
+  .vsCard{background:#fffcf4;border-radius:26px;border:5px solid #1e88e5;max-width:640px;width:100%;max-height:92dvh;overflow-y:auto;padding:18px 22px;box-shadow:0 20px 50px rgba(0,0,0,.25);}
+  .vsLabel{display:block;font-weight:800;font-size:clamp(13px,1.9vw,17px);margin:10px 0 4px;color:#5d4a37;}
+  .vsInput{width:100%;font-family:inherit;font-weight:700;font-size:clamp(14px,2vw,18px);padding:8px 14px;border:3px solid #d9c8b0;border-radius:14px;background:#fff;color:var(--ink);}
+  .vsInput:focus{outline:none;border-color:#1e88e5;}
+  .vsHint{background:#eef4ff;border:2px dashed #1e88e5;border-radius:14px;padding:8px 14px;font-size:clamp(11px,1.7vw,15px);font-weight:700;color:#1653a0;margin-top:10px;line-height:1.9;}
+  .vsStatus{min-height:1.5em;text-align:center;font-weight:800;font-size:clamp(13px,2vw,18px);margin-top:8px;}
+
   /* ===== نافذة الأناشيد ===== */
   #songs{position:fixed;inset:0;background:#fffcf4f5;backdrop-filter:blur(8px);z-index:50;display:none;flex-direction:column;padding:14px clamp(10px,3vw,40px) 10px;overflow:hidden;}
   #songs.open{display:flex;animation:rise .35s ease both;}
@@ -308,6 +318,7 @@
     <div class="chip" id="secChip">رِحْلَةُ الحُرُوفِ</div>
     <div class="progWrap"><div id="progBar"></div></div>
     <div id="counter">١ / ١</div>
+    <button class="iconBtn" id="btnVoiceSet" title="إعدادات الصوت البشري">🎙️</button>
     <button class="iconBtn" id="btnSound" title="تشغيل/إيقاف الصوت">🔊</button>
     <button class="iconBtn" id="btnSongs" title="نافذة الأناشيد">🎵 الأَنَاشِيد</button>
     <button class="iconBtn" id="btnMenu" title="فهرس الحروف">☰</button>
@@ -329,6 +340,35 @@
     <button class="closeBtn" id="btnClose">إِغْلَاق ✕</button>
   </div>
   <div class="tiles" id="menuTiles"></div>
+</div>
+
+<div id="voiceSet">
+  <div class="vsCard">
+    <div class="head" style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+      <h2 style="margin:0">🎙️ إِعْدَادَاتُ الصَّوْتِ البَشَرِيِّ</h2>
+      <button class="closeBtn" id="btnCloseVoiceSet">إِغْلَاق ✕</button>
+    </div>
+    <p class="sub" style="margin:8px 0">لِلْحُصُولِ عَلَى صَوْتٍ بَشَرِيٍّ حَقِيقِيٍّ: اِخْتَرْ مُزَوِّدًا وَأَلْصِقْ مَفْتَاحَكَ المَجَّانِيَّ ثُمَّ احْفَظْ</p>
+    <label class="vsLabel">المُزَوِّدُ (لَدَى الجَمِيعِ خُطَطٌ مَجَّانِيَّةٌ)</label>
+    <select id="vsProvider" class="vsInput">
+      <option value="none">صَوْتُ الجِهَازِ (دُونَ مَفْتَاحٍ)</option>
+      <option value="eleven">ElevenLabs — الأَصْوَاتُ الأَكْثَرُ بَشَرِيَّةً</option>
+      <option value="azure">Microsoft Azure — صَوْتٌ سُعُودِيٌّ (حَامِد)</option>
+      <option value="google">Google Cloud — أَصْوَاتٌ عَصَبِيَّةٌ</option>
+    </select>
+    <label class="vsLabel">مَفْتَاحُ الوُصُولِ (API Key)</label>
+    <input id="vsKey" type="password" class="vsInput" placeholder="أَلْصِقِ المَفْتَاحَ هُنَا…" autocomplete="off">
+    <label class="vsLabel" id="vsRegionLabel">المنطقة (Azure Region — مثال: westeurope أو uksouth)</label>
+    <input id="vsRegion" class="vsInput" placeholder="westeurope" autocomplete="off">
+    <label class="vsLabel">اسْمُ الصَّوْتِ (اخْتِيَارِيٌّ — اُتْرُكْهُ فَارِغًا لِلافْتِرَاضِيِّ)</label>
+    <input id="vsVoice" class="vsInput" placeholder="ElevenLabs: مُعَرِّفُ الصَّوْتِ • Azure: ar-SA-HamedNeural • Google: ar-XA-Neural2-C" autocomplete="off">
+    <div class="vsHint" id="vsHint"></div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px">
+      <button class="iconBtn" style="background:#2e9e5b" id="vsTest">🔊 تَجْرِبَةُ الصَّوْتِ</button>
+      <button class="iconBtn" id="vsSave">💾 حِفَظُ الإِعْدَادَاتِ</button>
+    </div>
+    <div id="vsStatus" class="vsStatus"></div>
+  </div>
 </div>
 
 <div id="songs">
@@ -603,40 +643,160 @@ let cur = 0;
   bg.innerHTML=html;
 })();
 
-/* ---------- الصَّوْتُ (النُّطْقُ) ---------- */
+/* ---------- الصَّوْتُ: مَحَرِّكٌ بَشَرِيٌّ سَحَابِيٌّ + تَرَاجُعٌ لِصَوْتِ الجِهَازِ ---------- */
 const SOUND = { on:true, voice:null };
+const VOICE = { lastEngine:null, error:null, cache:new Map(), audio:null, cloudDown:false };
+let VOICE_SEQ = 0;
+
+/* إعدادات الصوت البشري (تُحفظ في المتصفح) */
+const VSET = { provider:'none', key:'', region:'', voice:'' };
+try{ Object.assign(VSET, JSON.parse(localStorage.getItem('hurufVoiceSet')||'{}')); }catch(e){}
+function saveVSet(){ try{ localStorage.setItem('hurufVoiceSet', JSON.stringify(VSET)); }catch(e){} }
+
 function pickVoice(){
   if(!('speechSynthesis' in window)) return;
   const vs = speechSynthesis.getVoices();
   SOUND.voice =
+    vs.find(v=>/^ar/i.test(v.lang) && /online|natural/i.test(v.name)) ||          /* صوت طبيعي سحابي (Edge) */
     vs.find(v=>/ar[-_]SA/i.test(v.lang) && /hamed|naayf|saudi/i.test(v.name)) || /* صوت سعودي */
     vs.find(v=>/ar[-_]SA/i.test(v.lang)) ||
     vs.find(v=>/^ar/i.test(v.lang)) || null;
 }
-if('speechSynthesis' in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+if('speechSynthesis' in window){ pickVoice(); speechSynthesis.onvoiceschanged = ()=>{ pickVoice(); updateVoiceNote(); }; }
+
 function cleanForSpeech(t){
   return t.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}\u{20E3}\u{200D}\u{2726}-\u{2727}]/gu,'').replace(/\*/g,'').replace(/\s+/g,' ').trim();
 }
-function speak(text, opts={}){
-  if(!SOUND.on || !('speechSynthesis' in window)) return;
-  const t = cleanForSpeech(text); if(!t) return;
+
+/* تشغيل ملف صوتي مع إخبارنا عند انتهائه */
+function playAudio(url){
+  return new Promise(res=>{
+    try{
+      const a = new Audio(url); VOICE.audio = a;
+      let done=false; const fin=v=>{ if(!done){ done=true; res(v); } };
+      a.onended=()=>fin(true); a.onerror=()=>fin(false);
+      a.play().catch(()=>fin(false));
+      setTimeout(()=>{ if(!done){ try{a.pause();}catch(e){} fin(false); } }, 25000);
+    }catch(e){ res(false); }
+  });
+}
+
+/* تحميل حزمة Azure عند الحاجة فقط */
+let azureLoading=null;
+function loadAzure(){
+  if(window.SpeechConfig) return Promise.resolve();
+  if(!azureLoading) azureLoading=new Promise((res,rej)=>{
+    const s=document.createElement('script');
+    s.src='https://cdn.jsdelivr.net/npm/microsoft-speech-sdk@1.26.0/distrib/browser/microsoft.cognitiveservices.speech.sdk.bundle-min.js';
+    s.onload=res; s.onerror=rej; document.head.appendChild(s);
+  });
+  return azureLoading;
+}
+
+/* المحركات البشرية السحابية */
+async function humanSpeak(t, seq){
+  if(!VSET.key || VSET.provider==='none' || VOICE.cloudDown) return false;
+  if(seq!==VOICE_SEQ) return false;
+  VOICE.error=null;
+  try{
+    /* ١) ElevenLabs — أوضح صوت بشري */
+    if(VSET.provider==='eleven'){
+      const vid = VSET.voice || 'EXAVITQu4vr4xnSDxMaL';
+      const r = await fetch('https://api.elevenlabs.io/v1/text-to-speech/'+vid, {
+        method:'POST',
+        headers:{ 'xi-api-key':VSET.key, 'Content-Type':'application/json', 'Accept':'audio/mpeg' },
+        body: JSON.stringify({ text:t, model_id:'eleven_multilingual_v2', voice_settings:{ stability:.5, similarity_boost:.75 } })
+      });
+      if(!r.ok) throw new Error('ElevenLabs: '+r.status);
+      const b = await r.blob(); if(!b.size) throw new Error('ElevenLabs: فارغ');
+      const ended = await playAudio(URL.createObjectURL(b));
+      if(ended){ VOICE.lastEngine='بَشَرِيٌّ (ElevenLabs)'; return true; }
+      throw new Error('ElevenLabs: لم يُشَغَّل');
+    }
+    /* ٢) Microsoft Azure — صوت سعودي (حامد) */
+    if(VSET.provider==='azure'){
+      await loadAzure();
+      const cfg = SpeechConfig.fromSubscription(VSET.key, VSET.region || 'westeurope');
+      const vn = VSET.voice || 'ar-SA-HamedNeural';
+      cfg.speechSynthesisVoiceName = vn;
+      const ok = await new Promise(res=>{
+        try{
+          const syn = new SpeechSynthesizer(cfg, AudioConfig.fromDefaultSpeakerOutput());
+          let done=false; const fin=v=>{ if(!done){ done=true; try{syn.close();}catch(e){} res(v); } };
+          syn.speakTextAsync(t, ()=>fin(true), (e)=>{ VOICE.error=String(e&&e.errorDetails||e).slice(0,60); fin(false); });
+          setTimeout(()=>fin(false), 25000);
+        }catch(e){ res(false); }
+      });
+      if(ok){ VOICE.lastEngine = vn.includes('Hamed') ? 'بَشَرِيٌّ سُعُودِيٌّ (حَامِد)' : 'بَشَرِيٌّ (Azure)'; return true; }
+      throw new Error('Azure: فشل التوليد');
+    }
+    /* ٣) Google Cloud TTS */
+    if(VSET.provider==='google'){
+      const name = VSET.voice || 'ar-XA-Neural2-C';
+      const r = await fetch('https://texttospeech.googleapis.com/v1/text:synthesize?key='+encodeURIComponent(VSET.key), {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ input:{text:t}, voice:{languageCode:'ar-XA', name:name}, audioConfig:{audioEncoding:'MP3', speakingRate:0.9} })
+      });
+      if(!r.ok) throw new Error('Google: '+r.status);
+      const j = await r.json();
+      const b = await (await fetch('data:audio/mp3;base64,'+j.audioContent)).blob();
+      const ended = await playAudio(URL.createObjectURL(b));
+      if(ended){ VOICE.lastEngine='بَشَرِيٌّ (Google)'; return true; }
+      throw new Error('Google: لم يُشَغَّل');
+    }
+  }catch(e){
+    VOICE.error = String(e.message||e).slice(0,80);
+    if(/40[13]/.test(VOICE.error)) VOICE.cloudDown = true; /* مفتاح مرفوض: توقف عن المحاولة حتى يتغير الإعداد */
+  }
+  return false;
+}
+
+/* صوت الجهاز (احتياطي — وفي Edge قد يكون صوتًا طبيعيًا سعوديًا!) */
+function deviceSpeak(t, opts={}, cb){
+  if(!('speechSynthesis' in window)) return null;
   try{
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(t);
     u.lang = SOUND.voice ? SOUND.voice.lang : 'ar-SA';
     if(SOUND.voice) u.voice = SOUND.voice;
     u.rate = opts.rate ?? 0.85; u.pitch = opts.pitch ?? 1;
+    if(cb){ u.onend = cb; u.onerror = cb; }
+    if(SOUND.voice && /online|natural/i.test(SOUND.voice.name))
+      VOICE.lastEngine = 'بَشَرِيٌّ طَبِيعِيٌّ (Edge: '+SOUND.voice.name.split('(')[0].trim()+')';
+    else VOICE.lastEngine = 'صَوْتُ الجِهَازِ';
     speechSynthesis.speak(u);
     return u;
-  }catch(e){}
+  }catch(e){ return null; }
 }
+
+/* الدالة الموحدة: بشري أولًا ثم صوت الجهاز */
+function speakText(text, opts, onEnd){
+  if(!SOUND.on){ setTimeout(()=>onEnd&&onEnd(), (opts&&opts.silentMs)||2200); return; }
+  const t = cleanForSpeech(text);
+  if(!t){ onEnd&&onEnd(); return; }
+  const seq = ++VOICE_SEQ;
+  if(VOICE.audio){ try{ VOICE.audio.pause(); }catch(e){} }
+  humanSpeak(t, seq).then(ok=>{
+    if(seq!==VOICE_SEQ) return;
+    if(ok){ updateVoiceNote(); onEnd&&onEnd(); return; }
+    const u = deviceSpeak(t, opts||{}, ()=>{ if(seq===VOICE_SEQ){ updateVoiceNote(); onEnd&&onEnd(); } });
+    updateVoiceNote();
+    if(!u) onEnd&&onEnd();
+  });
+}
+function speak(text, opts={}){ speakText(text, opts, null); }
 function harClick(el,s,w){
   el.querySelector('.sym').animate([{transform:'scale(1)'},{transform:'scale(1.25)'},{transform:'scale(1)'}],{duration:450});
-  speak(s+'، '+w);
+  speakText(s+'، '+w, {}, null);
 }
 function wcardClick(el,word){
   el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
-  speak(word);
+  speakText(word, {}, null);
+}
+function stopVoice(){
+  VOICE_SEQ++;
+  if(VOICE.audio){ try{ VOICE.audio.pause(); }catch(e){} }
+  try{ speechSynthesis.cancel(); }catch(e){}
 }
 
 /* ---------- قوالب الشرائح ---------- */
@@ -1040,6 +1200,7 @@ $('#btnFs').onclick=()=>{
   else document.exitFullscreen?.();
 };
 document.addEventListener('keydown',e=>{
+  if($('#voiceSet').classList.contains('open')){ if(e.key==='Escape') closeVoiceSet(); return; }
   if($('#songs').classList.contains('open')){ if(e.key==='Escape') closeSongs(); return; }
   if($('#menu').classList.contains('open')){ if(e.key==='Escape') closeMenu(); return; }
   if(e.key==='ArrowLeft'||e.key==='PageDown'||e.key===' ') go(cur+1);
@@ -1122,21 +1283,68 @@ function buildSongList(){
 function openSongs(){ buildSongList(); $('#menu').classList.remove('open'); $('#songs').classList.add('open'); updateVoiceNote(); showSong(curSong); }
 function updateVoiceNote(){
   const el=$('#voiceNote'); if(!el) return;
-  if(!('speechSynthesis' in window)){
-    el.style.background='#fdecea'; el.style.borderColor='#e53935'; el.style.color='#a02020';
-    el.textContent='⚠️ المُتَصَفِّحُ لَا يَدْعَمُ النُّطْقَ';
+  const set=(bg,bd,fg,txt)=>{ el.style.background=bg; el.style.borderColor=bd; el.style.color=fg; el.textContent=txt; };
+  if(VOICE.lastEngine){
+    const human = VOICE.lastEngine.includes('بَشَرِي');
+    set(human?'#e8f7ee':'#eef4ff', human?'#2e9e5b':'#1e88e5', human?'#1d6e3c':'#1653a0',
+      (human?'🎙️ الصَّوْتُ الحَالِيُّ: ':'🔊 الصَّوْتُ الحَالِيُّ: ')+VOICE.lastEngine+(VOICE.error?(' — ⚠️ '+VOICE.error):''));
     return;
   }
-  const vs = speechSynthesis.getVoices();
-  const sa = vs.find(v=>/ar[-_]SA/i.test(v.lang));
-  const ar = vs.find(v=>/^ar/i.test(v.lang));
-  if(sa){ el.textContent='🔊 الصَّوْتُ العَرَبِيُّ السُّعُودِيُّ جَاهِزٌ: '+sa.name.replace(/^Microsoft |^Google /,''); }
-  else if(ar){ el.textContent='🔊 صَوْتٌ عَرَبِيٌّ جَاهِزٌ: '+ar.name.replace(/^Microsoft |^Google /,'')+' — (يُفَضَّلُ تَثْبِيتُ صَوْتٍ سُعُودِيٍّ)'; }
-  else {
-    el.style.background='#fff3d6'; el.style.borderColor='#e8b94a'; el.style.color='#8a6100';
-    el.textContent='⚠️ لَا يُوجَدُ صَوْتٌ عَرَبِيٌّ فِي الجِهَازِ — أَضِيفُوهُ مِنْ: الإِعْدَادَاتِ ← الوَقْتُ وَاللُّغَةُ ← الكَلَامُ ← إِضَافَةُ أَصْوَاتٍ ← العَرَبِيَّة';
-  }
+  if(VSET.key && VSET.provider!=='none'){ set('#eef4ff','#1e88e5','#1653a0','🎙️ صَوْتٌ بَشَرِيٌّ جَاهِزٌ — اِضْغَطْ «تَرْدِيدًا جَمَاعِيًّا» لِلْبَدْءِ'); return; }
+  const vs=('speechSynthesis' in window)?speechSynthesis.getVoices():[];
+  const natural=vs.find(v=>/^ar/i.test(v.lang)&&/online|natural/i.test(v.name));
+  if(natural){ set('#e8f7ee','#2e9e5b','#1d6e3c','🎙️ صَوْتٌ بَشَرِيٌّ طَبِيعِيٌّ جَاهِزٌ (Edge)'); return; }
+  set('#fff3d6','#e8b94a','#8a6100','🎙️ لِصَوْتٍ بَشَرِيٍّ: اِفْتَحِ المَوْقِعَ بِمُتَصَفِّحِ Edge أَوْ أَدْخِلْ مَفْتَاحًا مَجَّانِيًّا مِنْ زِرِّ الإِعْدَادَاتِ 🎙️');
 }
+
+/* ---------- لوحة إعدادات الصوت ---------- */
+const VS_HINTS={
+  none:'💡 أَسْهَلُ طَرِيقَةٍ مَجَّانِيَّةٍ تَمَامًا لِصَوْتٍ بَشَرِيٍّ سُعُودِيٍّ: اِفْتَحِ المَوْقِعَ بِمُتَصَفِّحِ Microsoft Edge — يُوَفِّرُ صَوْتًا طَبِيعِيًّا بِدُونِ أَيِّ مَفْتَاحٍ.',
+  eleven:'١) أَنْشِئْ حِسَابًا مَجَّانِيًّا فِي elevenlabs.io ٢) مِنَ القَائِمَةِ اخْتَرْ Profile ← API Keys ٣) انْسَخِ المَفْتَاحَ وَأَلْصِقْهُ هُنَا (١٠ آلافِ حَرْفٍ مَجَّانًا شَهْرِيًّا).',
+  azure:'١) أَنْشِئْ حِسَابًا فِي portal.azure.com ٢) أَنْشِئْ مَوْرَدَ Create a resource ← Speech (الخُطَّةُ المَجَّانِيَّةُ F0) ٣) انْسَخْ KEY 1 والمنطقة Region. الصَّوْتُ الافْتِرَاضِيُّ: ar-SA-HamedNeural (صَوْتٌ سُعُودِيٌّ) — ٥٠٠ أَلْفِ حَرْفٍ مَجَّانًا شَهْرِيًّا.',
+  google:'١) مِنْ console.cloud.google.com فَعِّلْ Text-to-Speech API ٢) أَنْشِئْ API Key. الصَّوْتُ الافْتِرَاضِيُّ: ar-XA-Neural2-C — مَجَّانًا حَتَّى مِلْيُونِ حَرْفٍ شَهْرِيًّا.'
+};
+function openVoiceSet(){
+  $('#vsProvider').value=VSET.provider;
+  $('#vsKey').value=VSET.key;
+  $('#vsRegion').value=VSET.region;
+  $('#vsVoice').value=VSET.voice;
+  $('#vsHint').textContent=VS_HINTS[VSET.provider]||'';
+  $('#vsRegion').style.display = VSET.provider==='azure' ? '' : 'none';
+  $('#vsRegionLabel').style.display = VSET.provider==='azure' ? '' : 'none';
+  $('#vsStatus').textContent='';
+  $('#voiceSet').classList.add('open');
+}
+function closeVoiceSet(){ $('#voiceSet').classList.remove('open'); }
+$('#btnVoiceSet').onclick=openVoiceSet;
+$('#btnCloseVoiceSet').onclick=closeVoiceSet;
+$('#vsProvider').onchange=()=>{
+  const p=$('#vsProvider').value;
+  $('#vsHint').textContent=VS_HINTS[p]||'';
+  $('#vsRegion').style.display = p==='azure' ? '' : 'none';
+  $('#vsRegionLabel').style.display = p==='azure' ? '' : 'none';
+};
+$('#vsSave').onclick=()=>{
+  VSET.provider=$('#vsProvider').value;
+  VSET.key=$('#vsKey').value.trim();
+  VSET.region=$('#vsRegion').value.trim();
+  VSET.voice=$('#vsVoice').value.trim();
+  saveVSet();
+  VOICE.lastEngine=null; VOICE.cloudDown=false;
+  const st=$('#vsStatus');
+  st.style.color='#2e9e5b';
+  st.textContent='✅ تَمَّ الحِفْظُ';
+  updateVoiceNote();
+};
+$('#vsTest').onclick=()=>{
+  const st=$('#vsStatus');
+  st.style.color='#1e88e5';
+  st.textContent='⏳ جَارِي التَّجْرِبَةُ…';
+  speakText('مَرْحَبًا بِكُمْ يَا أَبْطَالُ الصَّفِّ الأَوَّلِ فِي رِحْلَةِ الحُرُوفِ', {}, ()=>{
+    st.style.color = VOICE.lastEngine && VOICE.lastEngine.includes('بَشَرِي') ? '#2e9e5b' : '#b8860b';
+    st.textContent = '🎙️ النَّتِيجَةُ: '+(VOICE.lastEngine||'لَمْ يُعْمَلْ الصَّوْتُ')+(VOICE.error?(' — '+VOICE.error):'');
+  });
+};
 function openSongById(id){ const i=SONGS.findIndex(s=>s.id===id); if(i>=0){ curSong=i; openSongs(); } }
 function closeSongs(){ stopKaroake(); $('#songs').classList.remove('open'); editing=false; }
 function showSong(i){
@@ -1159,30 +1367,24 @@ function startKaroake(){
   karoLines = [...document.querySelectorAll('.songLine')];
   if(!karoLines.length) return;
   $('#btnKaroake').textContent='⏸ إِيقَافُ التَّرْدِيدِ';
-  karoIdx = 0;
+  singing = true; karoIdx = 0;
   playLine();
 }
 function playLine(){
+  if(!singing) return;
   if(!$('#songs').classList.contains('open')) return stopKaroake();
   karoLines.forEach((l,i)=>l.classList.toggle('active', i===karoIdx));
   const txt = cleanForSpeech(karoLines[karoIdx].textContent);
-  if(SOUND.on && 'speechSynthesis' in window && txt){
-    const u = new SpeechSynthesisUtterance(txt);
-    u.lang = SOUND.voice ? SOUND.voice.lang : 'ar-SA';
-    if(SOUND.voice) u.voice = SOUND.voice;
-    u.rate = 0.8; u.pitch = 1.05;
-    singing = true;
-    u.onend = ()=>{ singing=false; karoIdx=(karoIdx+1)%karoLines.length; songTimer=setTimeout(playLine, 500); };
-    u.onerror = u.onend;
-    try{ speechSynthesis.speak(u); }catch(e){ u.onend(); }
-  } else {
-    songTimer = setTimeout(()=>{ karoIdx=(karoIdx+1)%karoLines.length; playLine(); }, 2600);
-  }
+  speakText(txt, {rate:0.85, silentMs:2400}, ()=>{
+    if(!singing) return;
+    karoIdx = (karoIdx+1)%karoLines.length;
+    songTimer = setTimeout(playLine, 500);
+  });
 }
 function stopKaroake(){
+  singing = false;
   if(songTimer){ clearTimeout(songTimer); songTimer=null; }
-  try{ speechSynthesis.cancel(); }catch(e){}
-  singing=false;
+  stopVoice();
   document.querySelectorAll('.songLine').forEach(l=>l.classList.remove('active'));
   $('#btnKaroake').textContent='🔊 تَرْدِيدٌ جَمَاعِيٌّ';
 }
